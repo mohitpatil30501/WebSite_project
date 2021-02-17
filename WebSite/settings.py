@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'channels',
     'WebSite',
+    'User',
 ]
 
 MIDDLEWARE = [
@@ -82,11 +83,11 @@ DATABASES = {
     # }
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'initdb',
-        'USER': 'ehszdoxsuz',
-        'PASSWORD': 'Odu0znLTZ36TNXt7Tc0x',
-        'HOST': 'postgres-a6bf.euw2.aws.cloud.ametnes.com',
-        'PORT': '35938 '
+        'NAME': 'd5qrg65d6lopm1',
+        'USER': 'tgetozqrbzhuyy',
+        'PASSWORD': '15a7f8d5eac5f214815bccb93f71121c54456f1750e817ca716171a453d3af43',
+        'HOST': 'ec2-35-174-118-71.compute-1.amazonaws.com',
+        'PORT': '5432 '
     }
 }
 # Database key: rrbUoBKJrkpe5e6naQ5n

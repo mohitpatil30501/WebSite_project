@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import *
 
-# Register your models here.
+
+@admin.register(CollegeStudentData)
+class CollegeStudentDataAdmin(admin.ModelAdmin):
+    list_display = ('prn', 'first_name', 'last_name',)
