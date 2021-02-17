@@ -18,3 +18,10 @@ class Student(models.Model):
     college_data = models.ForeignKey(CollegeStudentData, on_delete=models.CASCADE)
     email_verification = models.BooleanField(default=False)
 
+
+# class CollegeTeacherData(models.Model):
+#     id = models.CharField(max_length=20, unique=True, primary_key=True)
+#     name = models.CharField(max_length=200)
+#     first_name = models.CharField(max_length=50)
+#     last_name = models.CharField(max_length=50)
+#     email = models.CharField(max_length=50)

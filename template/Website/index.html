@@ -7,7 +7,8 @@ SSBT Mech
 
 {% block head %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/Website/index.css' %}">
-    <script type="text/javascript" src="{% static 'js/Website/index.js' %}"></script>
+	<script>var token = '{% csrf_token %}';</script>
+	<script type="text/javascript" src="{% static 'js/Website/index.js' %}"></script>
 {% endblock %}
 
 {% block body %}
@@ -134,7 +135,8 @@ SSBT Mech
 						<img src="https://image.ibb.co/n7oTvU/logo_white.png" alt=""/>
 						<h3 class="righteous">Welcome</h3>
 						<hr class="bg-light" width="80%">
-						<form class="container-fluid m-0 p-0 text-center" method="post" action="/account/login" id="login-form">
+						<form class="container-fluid m-0 p-0 text-center" method="post" action="/accounts/login" id="login-form">
+							{% csrf_token %}
 							{% if messages %}
 							<div class="messages">
 								{% for message in messages %}
