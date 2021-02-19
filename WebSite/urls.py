@@ -6,4 +6,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),
     path('accounts/', include("User.urls")),
+    path('dashboard/', include("Dashboard.urls")),
 ]

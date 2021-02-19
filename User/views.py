@@ -117,6 +117,7 @@ def auth_logout(request):
                   {'error': 'Wrong Method',
                    'message': "Only POST method Allowed"})
 
+
 # Email Student
 def key_maker(username):
     kdf = PBKDF2HMAC(

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'channels',
     'WebSite',
     'User',
+    'Dashboard',
 ]
 
 MIDDLEWARE = [
