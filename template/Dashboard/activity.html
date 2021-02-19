@@ -1,0 +1,742 @@
+{% extends 'Dashboard/base.html' %}
+{% load static %}
+
+{% block title %}
+Activity
+{% endblock %}
+
+{% block head %}
+<!-- Select2 -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/select2/css/select2.min.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+{% endblock %}
+
+{% block body %}
+<body class="hold-transition sidebar-mini layout-fixed" data-panel-auto-height-mode="height">
+<div class="wrapper">
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="/dashboard" class="nav-link">Home</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="/contact" class="nav-link">Contact</a>
+      </li>
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <!-- Notifications Dropdown Menu -->
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="far fa-bell"></i>
+          <span class="badge badge-warning navbar-badge">0</span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          <span class="dropdown-item dropdown-header">15 Notifications</span>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <i class="fas fa-envelope mr-2"></i> 4 new messages
+            <span class="float-right text-muted text-sm">3 mins</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <i class="fas fa-users mr-2"></i> 8 friend requests
+            <span class="float-right text-muted text-sm">12 hours</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <i class="fas fa-file mr-2"></i> 3 new reports
+            <span class="float-right text-muted text-sm">2 days</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+          <i class="fas fa-expand-arrows-alt"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="/" class="brand-link">
+      <img src="{% static 'assets/image/Dashboard/Logo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">SSBT</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <!-- Sidebar user panel (optional) -->
+      <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+        <div class="image">
+          <img src="{% static 'assets/image/Dashboard/avatar.png' %}" class="img-circle elevation-2" alt="User Image">
+        </div>
+        <div class="info">
+          <a href="/dashboard" class="d-block">Mohit Patil</a>
+        </div>
+      </div>
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <li class="nav-header">MENU</li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon nav-icon fas fa-th"></i>
+              <p>
+                Profile
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/dashboard" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Dashboard</p>
+                </a>
+              </li>
+                <li class="nav-item">
+                <a href="/dashboard/edit/details" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Edit Details</p>
+                </a>
+              </li>
+                <li class="nav-item">
+                <a href="/dashboard/edit/designation" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Edit Designation</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-cog"></i>
+              <p>
+                Settings
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="pages/examples/lockscreen.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Change Username</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/examples/lockscreen.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Change Password</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/examples/lockscreen.html" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Change Linked</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper" style="min-height: 100vh;background-color: #fff;">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Activity</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item active">User Activity</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+          <div class="card">
+			  <div class="card-body">
+				<div class="tab-content">
+					<div class="active tab-pane" id="activity">
+                      <div class="pt-3">
+                            <h3><i class="fas fa-book-open mr-1"></i> Publications-Book</h3>
+                            <hr>
+                            <div class="form-group">
+                                  <label for="book-name"><i class="fas fa-book mr-1"></i> Book Name:</label>
+                                  <input type="text" class="form-control" id="book-name" placeholder="Enter Book Name">
+                            </div>
+                            <div class="form-group">
+                                  <label for="book-publication"><i class="fas fa-print mr-1"></i> Publication:</label>
+                                  <input type="text" class="form-control" id="book-publication" placeholder="Enter Publication">
+                            </div>
+                            <div class="form-group">
+                              <label for="book-year"><i class="fas fa-calendar-alt mr-1"></i> Year:</label>
+                              <input type="text" class="form-control" id="book-year" placeholder="Enter Year" data-inputmask-alias="datetime" data-inputmask-inputformat="yyyy" data-mask="" inputmode="numeric">
+                            </div>
+                            <div class="form-group text-right">
+                                  <button type="button" class="btn btn-primary" id="book-add">Add</button>
+                            </div>
+                            <div class="card">
+                              <div class="card-body table-responsive p-0" style="max-height: 300px;">
+                                <table class="table table-head-fixed text-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>Year</th>
+                                      <th>Book</th>
+                                      <th>Publication</th>
+                                      <th>Edit</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td><button type="button" class="btn btn-primary w-100">Edit</button></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="pt-3">
+                            <h3><i class="fas fa-copy mr-1"></i> Publications-Journal</h3>
+                            <hr>
+                            <div class="form-group">
+                                  <label for="journal-name"><i class="fas fa-book mr-1"></i> Journal Name:</label>
+                                  <input type="text" class="form-control" id="journal-name" placeholder="Enter Journal Name">
+                            </div>
+                            <div class="form-group">
+                                  <label for="journal-title"><i class="fas fa-heading mr-1"></i> Journal Title:</label>
+                                  <input type="text" class="form-control" id="journal-title" placeholder="Enter Journal Title">
+                            </div>
+                            <div class="form-group">
+                                  <label for="journal-publication"><i class="fas fa-print mr-1"></i> Publication:</label>
+                                  <input type="text" class="form-control" id="journal-publication" placeholder="Enter Publication">
+                            </div>
+                            <div class="form-group">
+                                  <label for="journal-page"><i class="fas fa-copy mr-1"></i> Journal Page No:</label>
+                                  <input type="number" class="form-control" id="journal-page" placeholder="Enter Journal Page No">
+                            </div>
+                            <div class="form-group">
+                              <label for="journal-year"><i class="fas fa-calendar-alt mr-1"></i> Year:</label>
+                              <input type="text" class="form-control" id="journal-year" placeholder="Enter Year" data-inputmask-alias="datetime" data-inputmask-inputformat="yyyy" data-mask="" inputmode="numeric">
+                            </div>
+                            <div class="form-group">
+                                  <label for="journal-url"><i class="fas fa-globe mr-1"></i> URL:</label>
+                                  <input type="text" class="form-control" id="journal-url" placeholder="Enter URL">
+                            </div>
+                            <div class="form-group">
+                              <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" id="journal-level-national" name="journal-level" value="national">
+                                <label for="journal-level-national" class="custom-control-label"> National</label>
+                              </div>
+                              <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" id="journal-level-international" name="journal-level" value="international">
+                                <label for="journal-level-international" class="custom-control-label"> International</label>
+                              </div>
+                            </div>
+                            <div class="form-group text-right">
+                                  <button type="button" class="btn btn-primary" id="journal-add">Add</button>
+                            </div>
+                            <div class="card">
+                              <div class="card-body table-responsive p-0" style="max-height: 300px;">
+                                <table class="table table-head-fixed text-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>Year</th>
+                                      <th>Name</th>
+                                      <th>Title</th>
+                                      <th>Publication</th>
+                                      <th>Page No</th>
+                                      <th>URL</th>
+                                      <th>Level</th>
+                                      <th>Edit</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td><button type="button" class="btn btn-primary w-100">Edit</button></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="pt-3">
+                            <h3><i class="fas fa-file-alt mr-1"></i> Publications-Paper</h3>
+                            <hr>
+                            <div class="form-group">
+                                  <label for="paper-name"><i class="fas fa-book mr-1"></i> Paper Name:</label>
+                                  <input type="text" class="form-control" id="paper-name" placeholder="Enter Paper Name">
+                            </div>
+                            <div class="form-group">
+                                  <label for="paper-title"><i class="fas fa-heading mr-1"></i> Paper Title:</label>
+                                  <input type="text" class="form-control" id="paper-title" placeholder="Enter Paper Title">
+                            </div>
+                            <div class="form-group">
+                                  <label for="paper-publication"><i class="fas fa-print mr-1"></i> Publication:</label>
+                                  <input type="text" class="form-control" id="paper-publication" placeholder="Enter Publication">
+                            </div>
+                            <div class="form-group">
+                              <label for="paper-year"><i class="fas fa-calendar-alt mr-1"></i> Year:</label>
+                              <input type="text" class="form-control" id="paper-year" placeholder="Enter Year" data-inputmask-alias="datetime" data-inputmask-inputformat="yyyy" data-mask="" inputmode="numeric">
+                            </div>
+                            <div class="form-group">
+                                  <label for="paper-url"><i class="fas fa-globe mr-1"></i> URL:</label>
+                                  <input type="text" class="form-control" id="paper-url" placeholder="Enter URL">
+                            </div>
+                            <div class="form-group">
+                              <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" id="paper-level-state" name="paper-level" value="state">
+                                <label for="paper-level-state" class="custom-control-label"> State</label>
+                              </div>
+                              <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" id="paper-level-national" name="paper-level" value="national">
+                                <label for="paper-level-national" class="custom-control-label"> National</label>
+                              </div>
+                              <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" id="paper-level-international" name="paper-level" value="international">
+                                <label for="paper-level-international" class="custom-control-label"> International</label>
+                              </div>
+                            </div>
+                            <div class="form-group text-right">
+                                  <button type="button" class="btn btn-primary" id="paper-add">Add</button>
+                            </div>
+                            <div class="card">
+                              <div class="card-body table-responsive p-0" style="max-height: 300px;">
+                                <table class="table table-head-fixed text-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>Year</th>
+                                      <th>Name</th>
+                                      <th>Title</th>
+                                      <th>Publication</th>
+                                      <th>URL</th>
+                                      <th>Level</th>
+                                      <th>Edit</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td><button type="button" class="btn btn-primary w-100">Edit</button></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="pt-3">
+                            <h3><i class="fas fa-pen-alt mr-1"></i> Short Terms Training Program (STTP)</h3>
+                            <hr>
+                            <div class="form-group">
+                                  <label for="sttp-name"><i class="fas fa-pencil-alt mr-1"></i> Program Name:</label>
+                                  <input type="text" class="form-control" id="sttp-name" placeholder="Enter Program Name">
+                            </div>
+                            <div class="form-group">
+                                  <label for="sttp-organization"><i class="fas fa-university mr-1"></i> Organization:</label>
+                                  <input type="text" class="form-control" id="sttp-organization" placeholder="Enter Organization">
+                            </div>
+                            <div class="form-group">
+                              <label for="sttp-date_form"><i class="fas fa-calendar-alt mr-1"></i> Date From:</label>
+                              <input type="text" class="form-control" id="sttp-date_form" placeholder="Enter Date From" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric">
+                            </div>
+                            <div class="form-group">
+                              <label for="sttp-date_to"><i class="fas fa-calendar-alt mr-1"></i> Date To:</label>
+                              <input type="text" class="form-control" id="sttp-date_to" placeholder="Enter Date To" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric">
+                            </div>
+                            <div class="form-group">
+                                  <label for="sttp-days"><i class="fas fa-clock mr-1"></i> Total Days:</label>
+                                  <input type="text" class="form-control" id="sttp-days" placeholder="Enter Total Days">
+                            </div>
+                            <div class="form-group text-right">
+                                  <button type="button" class="btn btn-primary" id="sttp-add">Add</button>
+                            </div>
+                            <div class="card">
+                              <div class="card-body table-responsive p-0" style="max-height: 300px;">
+                                <table class="table table-head-fixed text-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>Program</th>
+                                      <th>Organization</th>
+                                      <th>From</th>
+                                      <th>To</th>
+                                      <th>Total Days</th>
+                                      <th>Edit</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td><button type="button" class="btn btn-primary w-100">Edit</button></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="pt-3">
+                            <h3><i class="fas fa-cog mr-1"></i> Workshops</h3>
+                            <hr>
+                            <div class="form-group">
+                                  <label for="workshops-name"><i class="fas fa-pencil-alt mr-1"></i> Workshop Name:</label>
+                                  <input type="text" class="form-control" id="workshops-name" placeholder="Enter Workshop Name">
+                            </div>
+                            <div class="form-group">
+                                  <label for="workshops-organization"><i class="fas fa-university mr-1"></i> Organization:</label>
+                                  <input type="text" class="form-control" id="workshops-organization" placeholder="Enter Organization">
+                            </div>
+                            <div class="form-group">
+                              <label for="workshops-date_form"><i class="fas fa-calendar-alt mr-1"></i> Date From:</label>
+                              <input type="text" class="form-control" id="workshops-date_form" placeholder="Enter Date From" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric">
+                            </div>
+                            <div class="form-group">
+                              <label for="workshops-date_to"><i class="fas fa-calendar-alt mr-1"></i> Date To:</label>
+                              <input type="text" class="form-control" id="workshops-date_to" placeholder="Enter Date To" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric">
+                            </div>
+                            <div class="form-group">
+                                  <label for="workshops-days"><i class="fas fa-clock mr-1"></i> Total Days:</label>
+                                  <input type="text" class="form-control" id="workshops-days" placeholder="Enter Total Days">
+                            </div>
+                            <div class="form-group text-right">
+                                  <button type="button" class="btn btn-primary" id="workshops-add">Add</button>
+                            </div>
+                            <div class="card">
+                              <div class="card-body table-responsive p-0" style="max-height: 300px;">
+                                <table class="table table-head-fixed text-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>Workshop</th>
+                                      <th>Organization</th>
+                                      <th>From</th>
+                                      <th>To</th>
+                                      <th>Total Days</th>
+                                      <th>Edit</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td><button type="button" class="btn btn-primary w-100">Edit</button></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="pt-3">
+                            <h3><i class="fas fa-university mr-1"></i> Other Institute Interactions</h3>
+                            <hr>
+                            <div class="form-group">
+                                  <label for="oii-organization"><i class="fas fa-university mr-1"></i> Organization:</label>
+                                  <input type="text" class="form-control" id="oii-organization" placeholder="Enter Organization">
+                            </div>
+                            <div class="form-group">
+                              <label for="oii-year"><i class="fas fa-calendar-alt mr-1"></i> Year:</label>
+                              <input type="text" class="form-control" id="oii-year" placeholder="Enter Year" data-inputmask-alias="datetime" data-inputmask-inputformat="yyyy" data-mask="" inputmode="numeric">
+                            </div>
+                            <div class="form-group">
+                              <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" id="oii-invitee-visiting_faculty" name="oii-invitee" value="visiting_faculty">
+                                <label for="oii-invitee-visiting_faculty" class="custom-control-label"> Visiting Faculty</label>
+                              </div>
+                              <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" id="oii-invitee-examiner" name="oii-invitee" value="examiner">
+                                <label for="oii-invitee-examiner" class="custom-control-label"> Examiner</label>
+                              </div>
+                              <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" id="oii-invitee-supervisor" name="oii-invitee" value="supervisor">
+                                <label for="oii-invitee-supervisor" class="custom-control-label"> Supervisor</label>
+                              </div>
+                              <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" id="oii-invitee-expert" name="oii-invitee" value="expert">
+                                <label for="oii-invitee-expert" class="custom-control-label"> Expert</label>
+                              </div>
+                            </div>
+                            <div class="form-group text-right">
+                                  <button type="button" class="btn btn-primary" id="oii-add">Add</button>
+                            </div>
+                            <div class="card">
+                              <div class="card-body table-responsive p-0" style="max-height: 300px;">
+                                <table class="table table-head-fixed text-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>Year</th>
+                                      <th>Organization</th>
+                                      <th>Invitee</th>
+                                      <th>Edit</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td><button type="button" class="btn btn-primary w-100">Edit</button></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="pt-3">
+                            <h3><i class="fas fa-marker mr-1"></i> Consultancy</h3>
+                            <hr>
+                            <div class="form-group">
+                                  <label for="consultancy-organization"><i class="fas fa-university mr-1"></i> Organization:</label>
+                                  <input type="text" class="form-control" id="consultancy-organization" placeholder="Enter Organization">
+                            </div>
+                            <div class="form-group">
+                              <label for="consultancy-year"><i class="fas fa-calendar-alt mr-1"></i> Year:</label>
+                              <input type="text" class="form-control" id="consultancy-year" placeholder="Enter Year" data-inputmask-alias="datetime" data-inputmask-inputformat="yyyy" data-mask="" inputmode="numeric">
+                            </div>
+                            <div class="form-group">
+                                  <label for="consultancy-workdone"><i class="fas fa-cog mr-1"></i> Workdone:</label>
+                                  <input type="text" class="form-control" id="consultancy-workdone" placeholder="Enter Workdone">
+                            </div>
+                            <div class="form-group">
+                                  <label for="consultancy-cost"><i class="fas fa-cog mr-1"></i> Cost:</label>
+                                  <div class="input-group">
+                                    <div class="input-group-prepend">
+                                      <span class="input-group-text">₹</span>
+                                    </div>
+                                    <input type="number" class="form-control" id="consultancy-cost" placeholder="Enter Cost">
+                                  </div>
+                            </div>
+                            <div class="form-group text-right">
+                                  <button type="button" class="btn btn-primary" id="workdone-add">Add</button>
+                            </div>
+                            <div class="card">
+                              <div class="card-body table-responsive p-0" style="max-height: 300px;">
+                                <table class="table table-head-fixed text-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>Year</th>
+                                      <th>Organization</th>
+                                      <th>Workdone</th>
+                                      <th>Cost</th>
+                                      <th>Edit</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td><button type="button" class="btn btn-primary w-100">Edit</button></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="pt-3">
+                            <h3><i class="fas fa-award mr-1"></i> Award Received</h3>
+                            <hr>
+                            <div class="form-group">
+                                  <label for="award-organization"><i class="fas fa-university mr-1"></i> Organization:</label>
+                                  <input type="text" class="form-control" id="award-organization" placeholder="Enter Organization">
+                            </div>
+                            <div class="form-group">
+                              <label for="award-year"><i class="fas fa-calendar-alt mr-1"></i> Year:</label>
+                              <input type="text" class="form-control" id="award-year" placeholder="Enter Year" data-inputmask-alias="datetime" data-inputmask-inputformat="yyyy" data-mask="" inputmode="numeric">
+                            </div>
+                            <div class="form-group">
+                                  <label for="award-title"><i class="fas fa-trophy mr-1"></i> Title:</label>
+                                  <input type="text" class="form-control" id="award-title" placeholder="Enter Title">
+                            </div>
+                            <div class="form-group text-right">
+                                  <button type="button" class="btn btn-primary" id="award-add">Add</button>
+                            </div>
+                            <div class="card">
+                              <div class="card-body table-responsive p-0" style="max-height: 300px;">
+                                <table class="table table-head-fixed text-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>Year</th>
+                                      <th>Organization</th>
+                                      <th>Title</th>
+                                      <th>Edit</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td><button type="button" class="btn btn-primary w-100">Edit</button></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="pt-3">
+                            <h3><i class="fas fa-atom mr-1"></i> Project Guided</h3>
+                            <hr>
+                            <div class="form-group">
+                                  <label for="project-name"><i class="fas fa-book mr-1"></i> Project Name:</label>
+                                  <input type="text" class="form-control" id="project-name" placeholder="Enter Project Name">
+                            </div>
+                            <div class="form-group">
+                              <label for="project-year"><i class="fas fa-calendar-alt mr-1"></i> Year:</label>
+                              <input type="text" class="form-control" id="project-year" placeholder="Enter Year" data-inputmask-alias="datetime" data-inputmask-inputformat="yyyy" data-mask="" inputmode="numeric">
+                            </div>
+                            <div class="form-group">
+                              <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" id="project-level-ug" name="project-level" value="UG">
+                                <label for="project-level-ug" class="custom-control-label"> UG</label>
+                              </div>
+                              <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" id="project-level-pg" name="project-level" value="PG">
+                                <label for="project-level-pg" class="custom-control-label"> PG</label>
+                              </div>
+                              <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" id="project-level-phd" name="project-level" value="PHD">
+                                <label for="project-level-phd" class="custom-control-label"> PHD</label>
+                              </div>
+                            </div>
+                            <div class="form-group text-right">
+                                  <button type="button" class="btn btn-primary" id="project-add">Add</button>
+                            </div>
+                            <div class="card">
+                              <div class="card-body table-responsive p-0" style="max-height: 300px;">
+                                <table class="table table-head-fixed text-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>Year</th>
+                                      <th>Name</th>
+                                      <th>Level</th>
+                                      <th>Edit</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td><button type="button" class="btn btn-primary w-100">Edit</button></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+                      <hr>
+                          <div class="pt-3">
+                            <h3><i class="fas fa-cogs mr-1"></i> Extra Curricular Activities</h3>
+                            <hr>
+                            <div class="form-group">
+                                  <label for="eca-name"><i class="fas fa-book mr-1"></i> Name:</label>
+                                  <input type="text" class="form-control" id="eca-name" placeholder="Enter Name">
+                            </div>
+                            <div class="form-group">
+                              <label for="eca-year"><i class="fas fa-calendar-alt mr-1"></i> Year:</label>
+                              <input type="text" class="form-control" id="eca-year" placeholder="Enter Year" data-inputmask-alias="datetime" data-inputmask-inputformat="yyyy" data-mask="" inputmode="numeric">
+                            </div>
+                            <div class="form-group text-right">
+                                  <button type="button" class="btn btn-primary" id="eca-add">Add</button>
+                            </div>
+                            <div class="card">
+                              <div class="card-body table-responsive p-0" style="max-height: 300px;">
+                                <table class="table table-head-fixed text-nowrap">
+                                  <thead>
+                                    <tr>
+                                      <th>Year</th>
+                                      <th>Information</th>
+                                      <th>Edit</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td class="text-muted">Strength Of Material</td>
+                                      <td><button type="button" class="btn btn-primary w-100">Edit</button></td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </div>
+
+					</div>
+                  <!-- /.tab-pane -->
+                </div>
+                <!-- /.tab-content -->
+              </div><!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+	<!-- /.content-wrapper -->
+
+</div>
+
+<!-- InputMask -->
+<script src="{% static 'assets/plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'assets/plugins/inputmask/jquery.inputmask.min.js' %}"></script>
+<!-- Select2 -->
+<script src="{% static 'assets/plugins/select2/js/select2.full.min.js' %}"></script>
+
+<!-- page script -->
+<script src="{% static 'js/Dashboard/activity.js' %}"></script>
+
+</body>
+{% endblock %}
