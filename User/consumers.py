@@ -164,6 +164,11 @@ class UserConsumer(AsyncWebsocketConsumer):
                 'status': False,
                 'error': 'Password must be at least 8 characters'
             }
+        if len(username) == 0:
+            return {
+                'status': False,
+                'error': 'Please Set Username First'
+            }
         capital = small = number = symbol = False
         prn = self.scope["session"]["prn"]
         try:

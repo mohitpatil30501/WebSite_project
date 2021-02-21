@@ -14,6 +14,10 @@ from .models import *
 from WebSite.settings import SECRET_KEY
 
 
+def check_login(request):
+    return render(request, 'User/register.html')
+
+
 def student_create(request):
     if request.method == "POST":
         prn = request.POST.get('prn')
@@ -68,8 +72,18 @@ def student_create(request):
                    'message': "Only POST method Allowed"})
 
 
+def auth_signup(request):
+    if request.method == "GET":
+        return render(request, "User/register.html")
+    return render(request, "error/index.html",
+                  {'error': 'Wrong Method',
+                   'message': "Only POST method Allowed"})
+
+
 def auth_login(request):
-    if request.method == "POST":
+    if request.method == "GET":
+        return render(request, "User/login.html")
+    elif request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
         if User.objects.filter(username=username).count() == 0:
