@@ -14,10 +14,6 @@ from .models import *
 from WebSite.settings import SECRET_KEY
 
 
-def check_login(request):
-    return render(request, 'User/register.html')
-
-
 def student_create(request):
     if request.method == "POST":
         prn = request.POST.get('prn')
@@ -74,6 +70,8 @@ def student_create(request):
 
 def auth_signup(request):
     if request.method == "GET":
+        if request.user.is_authenticated:
+            return redirect('/')
         return render(request, "User/register.html")
     return render(request, "error/index.html",
                   {'error': 'Wrong Method',
@@ -82,25 +80,22 @@ def auth_signup(request):
 
 def auth_login(request):
     if request.method == "GET":
-        return render(request, "User/login.html")
+        if request.user.is_authenticated:
+            return redirect('/')
+        return render(request, "User/login.html", {'message': ''})
     elif request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
         if User.objects.filter(username=username).count() == 0:
-            messages.error(request, 'User Not Exist.')
-            return render(request, "Website/index.html")
+            return render(request, "User/login.html", {'message': 'User Not Exist'})
 
         try:
             user = User.objects.filter(username=username).get()
             if not user.is_active:
                 user_data = Student.objects.filter(student=user).get()
                 if not user_data.email_verification:
-                    return render(request, "error/index.html",
-                                  {'error': 'Verify Email First',
-                                   'message': "Email is Not Verified..!"})
-                return render(request, "error/index.html",
-                              {'error': 'Inactive User',
-                               'message': "User is InActive..!"})
+                    return render(request, "User/login.html", {'message': 'Email is Not Verified'})
+                return render(request, "User/login.html", {'message': 'User is InActive'})
         except:
             return render(request, "error/index.html",
                           {'error': 'Data Problem',
@@ -108,8 +103,7 @@ def auth_login(request):
 
         user = authenticate(username=username, password=password)
         if user is None:
-            messages.error(request, 'Incorrect Password')
-            return render(request, "Website/index.html")
+            return render(request, "User/login.html", {'message': 'Incorrect Password'})
 
         login(request, user)
         return redirect('/dashboard')
@@ -156,7 +150,7 @@ def email_confirmation_send_to_student(user, request):
         "valid_time": str(datetime.datetime.today() + datetime.timedelta(days=3))
     }
     data = key.encrypt(json.dumps(data).encode()).decode()
-    url = request.build_absolute_uri('?') + "/email_verification/" + user.username + "/" + data
+    url = request.build_absolute_uri("/accounts/email_verification/" + user.username + "/" + data)
 
     message = '''
     <!DOCTYPE html>
@@ -219,3 +213,146 @@ def email_verifcation_of_student(request, username, data):
         return render(request, "error/index.html",
                       {'error': 'Something went wrong',
                        'message': "Something went wrong...!"})
+
+
+# forgot_password
+def forgot_password(request):
+    if request.method == "GET":
+        if not request.user.is_authenticated:
+            return render(request, "User/forgot_password.html")
+        return redirect('/')
+    elif request.method == "POST":
+        username = request.POST.get('username')
+        if User.objects.filter(username=username).count() == 0:
+            return render(request, "User/forgot_password.html", {'message': 'User Not Exist'})
+
+        try:
+            user = User.objects.filter(username=username).get()
+            try:
+                student = Student.objects.filter(student=user).get()
+            except:
+                return render(request, "User/forgot_password.html", {'message': "User Found, But Doesn't have Role."})
+            key = key_maker(user.username)
+            data = {
+                "username": user.username,
+                "valid_time": str(datetime.datetime.today() + datetime.timedelta(minutes=5))
+            }
+            data = key.encrypt(json.dumps(data).encode()).decode()
+            url = request.build_absolute_uri("/accounts/reset_password/" + user.username + "/" + data)
+
+            message = '''
+                <!DOCTYPE html>
+                <html>
+                <head>
+                </head>
+                <body>
+                    <h1>SSBT</h1>
+                    <h3>Reset Password</h3>
+                    <form method="GET" action="''' + str(url) + ''''">
+                        <button type="submit">Click to Verify</button>
+                    </form>
+                    <hr>
+                    <p>Valid for 5 min only</p>
+                    <h2>If this mail is not relatable, Please Do not Click to Verify...!</h2>
+                </body>
+                </html>
+                '''
+
+            try:
+                send_mail("Reset Password", "", "SSBT", [user.email, ], fail_silently=False, html_message=message)
+                student.password_state = False
+                student.save()
+                return render(request, "User/forgot_password.html", {'message': 'Email Send Successfully'})
+            except:
+                return render(request, "User/forgot_password.html", {'message': 'Failed to Send Email'})
+
+        except:
+            return render(request, "error/index.html",
+                          {'error': 'Something Went Wrong',
+                           'message': "Data Extraction Problem"})
+
+    return render(request, "error/index.html",
+                  {'error': 'Wrong Method',
+                   'message': "Only POST method Allowed"})
+
+
+# reset Password
+def reset_password_get(request, username, data):
+    if request.method == "GET":
+        key = key_maker(username)
+        try:
+            data = key.decrypt(data.encode()).decode()
+            data = json.loads(data)
+
+            valid_time = datetime.datetime.strptime(data["valid_time"], '%Y-%m-%d %H:%M:%S.%f')
+
+            if datetime.timedelta(minutes=0, seconds=0) <= valid_time - datetime.datetime.today() <= datetime.timedelta(
+                    minutes=5, seconds=0) and username == data['username']:
+                # change state to Active
+                try:
+                    user = User.objects.filter(username=username).get()
+
+                    student_data = Student.objects.filter(student=user).get()
+                    if student_data.password_state:
+                        return render(request, "error/index.html",
+                                      {'error': 'Invalid Link',
+                                       'message': "Link is Used or Expired"})
+                    return render(request, "User/reset_password.html", {'id': student_data.id})
+                except:
+                    return render(request, "error/index.html",
+                                  {'error': 'Data Problem',
+                                   'message': "Unable to Extract user data...!"})
+                # return JsonResponse({
+                #     'username': username,
+                #     'data': data,
+                #     'valid_status': True
+                # })
+            return render(request, "error/index.html",
+                          {'error': 'Expired Link',
+                           'message': "Link is Not Valid...!"})
+        except:
+            return render(request, "error/index.html",
+                          {'error': 'Something went wrong',
+                           'message': "Something went wrong...!"})
+
+    return render(request, "error/index.html",
+                  {'error': 'Wrong Method',
+                   'message': "Not Found-404"})
+
+
+def reset_password_post(request):
+    if request.method == "GET":
+        if request.user.is_authenticated:
+            try:
+                student = Student.objects.filter(student=request.user).get()
+                return render(request, "User/reset_password.html", {'id': student.id})
+            except:
+                return render(request, "error/index.html",
+                              {'error': 'Data Problem',
+                               'message': "Unable to Extract user data...!"})
+        else:
+            return redirect('/')
+
+    elif request.method == "POST":
+        id = request.POST.get('id')
+        password = request.POST.get('password')
+
+        if request.user.is_authenticated:
+            logout(request)
+
+        try:
+            student = Student.objects.filter(id=id).get()
+            if student.password_state:
+                return render(request, "User/login.html", {'message': 'Password is Already Reset or Unchanged'})
+            student.student.set_password(password)
+            student.student.save()
+            student.password_state = True
+            student.save()
+            return render(request, "User/login.html", {'message': 'Password Set Successful'})
+        except:
+            return render(request, "error/index.html",
+                          {'error': 'Data Problem',
+                           'message': "Unable to Extract user data...!"})
+    return render(request, "error/index.html",
+                  {'error': 'Wrong Method',
+                   'message': "Not Found-404"})

@@ -22,6 +22,7 @@ Login
 
       <form id="login-form" action="/accounts/login" method="post">
         {% csrf_token %}
+        <p class="text-left text-danger" id="login-message">{{ message }}</p>
         <div class="input-group mb-3">
           <input type="text" name="username" class="form-control" placeholder="Username" required>
           <div class="input-group-append">

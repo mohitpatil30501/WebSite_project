@@ -220,3 +220,120 @@ class UserConsumer(AsyncWebsocketConsumer):
                 'status': False,
                 'error': 'Problem to PRN Data..!'
             }
+
+
+class UserResetPasswordConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.id = self.scope['url_route']['kwargs']['id']
+
+        # Join room group
+        await self.channel_layer.group_add(
+            self.id,
+            self.channel_name
+        )
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        # Leave room group
+        await self.channel_layer.group_discard(
+            self.id,
+            self.channel_name
+        )
+
+    async def receive(self, text_data):
+        text_data_json = json.loads(text_data)
+        if text_data_json['process'] == 'password-availability':
+            password = text_data_json['password']
+            id = text_data_json['id']
+            data = await self.password_check(password, id)
+            if not data['status']:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'password-availability',
+                        'status': False,
+                        'error': data['error']
+                    }
+                )
+            else:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'password-availability',
+                        'status': True,
+                        'data': data['data']
+                    }
+                )
+
+    async def send_status(self, event):
+        if event['status']:
+            await self.send(text_data=json.dumps({
+                'process': event['process'],
+                'status': event['status'],
+                'data': event['data']
+            }))
+        else:
+            await self.send(text_data=json.dumps({
+                'process': event['process'],
+                'status': event['status'],
+                'error': event['error']
+            }))
+
+    @database_sync_to_async
+    def password_check(self, password, id):
+        if len(password) < 8:
+            return {
+                'status': False,
+                'error': 'Password must be at least 8 characters'
+            }
+        if len(id) == 0:
+            return {
+                'status': False,
+                'error': 'Something Went Wrong'
+            }
+        capital = small = number = symbol = False
+        try:
+            data = Student.objects.filter(id=id).get()
+            data = [data.college_data.prn, data.college_data.name, data.student.first_name, data.student.last_name, data.college_data.mother_name]
+        except:
+            data = None
+        if data is not None:
+            for word in data:
+                if word in password.upper() or password.upper() in word:
+                    return {
+                        'status': False,
+                        'error': 'Password must be not related to personal details'
+                    }
+
+            for c in password:
+                if c in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+                    capital = True
+                elif c in "abcdefghijklmnopqrstuvwxyz":
+                    small = True
+                elif c in "1234567890":
+                    number = True
+                elif c in r'''~`!@#$%^&*()_+-={}|[]\;':",./<>?''':
+                    symbol = True
+                elif c == ' ':
+                    return {
+                        'status': False,
+                        'error': 'Password not contain whitespace'
+                    }
+
+            if not capital or not small or not number or not symbol:
+                return {
+                    'status': False,
+                    'error': 'Password must be contain one Capital, Small, Number and Symbol character'
+                }
+            else:
+                return {
+                    'status': True,
+                    'data': 'Password is suitable'
+                }
+        else:
+            return {
+                'status': False,
+                'error': 'Problem to PRN Data..!'
+            }

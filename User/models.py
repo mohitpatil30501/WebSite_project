@@ -17,6 +17,7 @@ class Student(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     college_data = models.ForeignKey(CollegeStudentData, on_delete=models.CASCADE)
     email_verification = models.BooleanField(default=False)
+    password_state = models.BooleanField(default=True)
 
 
 # class CollegeTeacherData(models.Model):

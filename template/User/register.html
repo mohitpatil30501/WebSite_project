@@ -6,7 +6,9 @@ Signup
 {% endblock %}
 
 {% block head %}
-<script>var token = '{% csrf_token %}';</script>
+<script>
+    var token = '{% csrf_token %}';
+</script>
 <script type="text/javascript" src="{% static 'js/User/register.js' %}"></script>
 {% endblock %}
 

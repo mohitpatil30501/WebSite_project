@@ -157,7 +157,6 @@ $(document).on('submit', "#signup-verify-form", function(e){
 })
 
 chatSocket.onopen = function(e) {
-    console.log("open", e)
     if($("#loading_signup").length){
         $("#loading_signup").remove()
     }
@@ -291,7 +290,6 @@ chatSocket.onopen = function(e) {
 };
 
 chatSocket.onclose = function(e) {
-    console.log('close', e);
     if($("#signup_verify").length){
         $("#signup_verify").remove()
     }
@@ -306,12 +304,10 @@ chatSocket.onclose = function(e) {
 };
 
 chatSocket.onerror = function(e){
-    console.error("error", e)
 }
 
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
-    console.log('message', data)
     if(data['process'] === 'signup-verify'){
         if(data['status'] == false){
             $("#verify-message").text(data['error']);
