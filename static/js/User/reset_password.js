@@ -125,7 +125,7 @@ chatSocket.onopen = function(e) {
             <form action="/accounts/reset_password" method="post" id="reset-form">`
         + token +
         `<div class="form-group input-group d-none">
-            <input type="text" class="form-control" name="id" id="id" placeholder="ID" value="" required readonly>
+            <input type="text" class="form-control" name="id" id="id" placeholder="ID" readonly>
         </div>
         <div class="form-group input-group">
             <input type="password" class="form-control" name="password" id="set_password" placeholder="Set Password" required>
