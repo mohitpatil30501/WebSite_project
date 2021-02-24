@@ -357,7 +357,6 @@ class UserConsumer(AsyncWebsocketConsumer):
             data = [data.id, data.name, data.first_name, data.last_name, data.email]
         except:
             data = None
-        print(data, id)
         if data is not None:
             for word in data:
                 if word.upper() in password.upper() or password.upper() in word.upper():

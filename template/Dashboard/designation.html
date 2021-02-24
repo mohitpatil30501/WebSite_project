@@ -9,6 +9,10 @@ Designation
 <!-- Select2 -->
   <link rel="stylesheet" href="{% static 'assets/plugins/select2/css/select2.min.css' %}">
   <link rel="stylesheet" href="{% static 'assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
+
+<script>
+  var data  = {{ data|safe }};
+</script>
 {% endblock %}
 
 {% block body %}
@@ -84,7 +88,7 @@ Designation
           <img src="{% static 'assets/image/Dashboard/avatar.png' %}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="/dashboard" class="d-block">Mohit Patil</a>
+          <a href="/dashboard" class="d-block">{{ request.user.first_name }} {{ request.user.last_name }}</a>
         </div>
       </div>
 
@@ -182,40 +186,49 @@ Designation
 			  <div class="card-body">
 				<div class="tab-content">
 					<div class="active tab-pane" id="designation-div">
-						<div class="card-body">
+
+                        <p class="text-danger text-center py-3" id="loading">Wait for connecting to Server</p>
+
+						<div class="card-body d-none" id="designation-div-form">
                           <div>
-                            <form method="post" action="#" id="designation-form">
-                              {% csrf_token %}
+                            <div id="designation-form">
+
                               <div class="form-group">
                                 <label for="designation"><i class="fas fa-pen mr-1"></i> Designation:</label>
-                                <input type="text" class="form-control" id="designation" placeholder="Enter Designation">
+                                <input type="text" class="form-control" id="designation" placeholder="Enter Designation" {% if data.designation.designation != '' %}  value="{{data.designation.designation}}" {% endif %} readonly>
                               </div>
 
                               <div class="form-group">
                                 <label for="department"><i class="fas fa-archive mr-1"></i> Department Name:</label>
-                                <input type="text" class="form-control" id="department" placeholder="Enter Department Name">
+                                <input type="text" class="form-control" id="department" placeholder="Enter Department Name" {% if data.designation.department != '' %}  value="{{data.designation.department}}" {% endif %} readonly>
                               </div>
 
                               <div class="form-group">
                                 <label for="institute"><i class="fas fa-university mr-1"></i> Institute Name:</label>
-                                <input type="text" class="form-control" id="institute" placeholder="Enter Institute Name">
+                                <input type="text" class="form-control" id="institute" placeholder="Enter Institute Name" {% if data.designation.institute != '' %}  value="{{data.designation.institute}}" {% endif %} readonly>
                               </div>
 
                               <div class="form-group text-right">
-                                <button type="button" class="btn btn-primary" id="details-form-submit">Save</button>
+                                <span id="loading-animation-designation" class="fas fa-spinner fa-pulse d-none"></span>
+                                <button type="button" class="btn btn-primary" id="designation-form-submit">Save</button>
                               </div>
-                            </form>
+                            </div>
                           </div>
                           <hr>
                           <div>
                             <div class="form-group">
+                                  <input type="text" class="form-control d-none" id="subject_of_interest-id" value="" placeholder="ID" readonly>
+                            </div>
+
+                            <div class="form-group">
                                   <label for="subject_of_interest"><i class="fas fa-book-open mr-1"></i> Subject Name:</label>
-                                  <input type="text" class="form-control" id="subject_of_interest" placeholder="Enter Subject Name">
+                                  <input type="text" class="form-control" id="subject_of_interest" placeholder="Enter Subject Name" readonly>
                             </div>
                             <div class="form-group text-right">
-                                  <button type="button" class="btn btn-primary" id="subject_of_interest-add">Add</button>
+                              <span id="loading-animation-subject_of_interest" class="fas fa-spinner fa-pulse d-none"></span>
+                              <button type="button" class="btn btn-primary" id="subject_of_interest-add">Add</button>
                             </div>
-                            <div class="card">
+                            <div class="card d-none" id="interest-table">
                               <div class="card-body table-responsive p-0" style="max-height: 300px;">
                                 <table class="table table-head-fixed text-nowrap">
                                   <thead>
@@ -224,11 +237,8 @@ Designation
                                       <th>Edit</th>
                                     </tr>
                                   </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td><button type="button" class="btn btn-primary w-100">Edit</button></td>
-                                    </tr>
+                                  <tbody id="interest-table-body">
+
                                   </tbody>
                                 </table>
                               </div>
@@ -240,23 +250,23 @@ Designation
                             <hr>
                             <div class="form-group">
                                   <label for="degree"><i class="fas fa-graduation-cap mr-1"></i> Degree:</label>
-                                  <input type="text" class="form-control" id="degree" placeholder="Enter Degree">
+                                  <input type="text" class="form-control" id="degree" placeholder="Enter Degree" readonly>
                             </div>
                             <div class="form-group">
                                   <label for="specialisation"><i class="fas fa-pen-alt mr-1"></i> Specialisation:</label>
-                                  <input type="text" class="form-control" id="specialisation" placeholder="Enter Specialisation">
+                                  <input type="text" class="form-control" id="specialisation" placeholder="Enter Specialisation" readonly>
                             </div>
                             <div class="form-group">
                                   <label for="university"><i class="fas fa-university mr-1"></i> University:</label>
-                                  <input type="text" class="form-control" id="university" placeholder="Enter University">
+                                  <input type="text" class="form-control" id="university" placeholder="Enter University" readonly>
                             </div>
                             <div class="form-group">
                                   <label for="academic-year"><i class="fas fa-calendar-alt mr-1"></i> Year:</label>
-                                  <input type="text" class="form-control" id="academic-year" placeholder="Enter Year">
+                                  <input type="text" class="form-control" id="academic-year" placeholder="Enter Year" readonly>
                             </div>
                             <div class="form-group">
                                   <label for="remarks"><i class="fas fa-marker mr-1"></i> Remarks:</label>
-                                  <input type="text" class="form-control" id="remarks" placeholder="Enter Remarks">
+                                  <input type="text" class="form-control" id="remarks" placeholder="Enter Remarks" readonly>
                             </div>
                             <div class="form-group text-right">
                                   <button type="button" class="btn btn-primary" id="academics-add">Add</button>
@@ -294,15 +304,15 @@ Designation
                             <hr>
                             <div class="form-group">
                                   <label for="society"><i class="fas fa-university mr-1"></i> Society Name:</label>
-                                  <input type="text" class="form-control" id="society" placeholder="Enter Society Name">
+                                  <input type="text" class="form-control" id="society" placeholder="Enter Society Name" readonly>
                             </div>
                             <div class="form-group">
                                   <label for="ist_no"><i class="fas fa-list-ol mr-1"></i> IST No:</label>
-                                  <input type="text" class="form-control" id="ist_no" placeholder="Enter IST No">
+                                  <input type="text" class="form-control" id="ist_no" placeholder="Enter IST No" readonly>
                             </div>
                             <div class="form-group">
                               <label for="date_of_membership"><i class="fas fa-calendar-alt mr-1"></i> Date of Membership:</label>
-                              <input type="text" class="form-control" id="date_of_membership" placeholder="Enter Date of Membership" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric">
+                              <input type="text" class="form-control" id="date_of_membership" placeholder="Enter Date of Membership" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric" readonly>
                             </div>
                             <div class="form-group text-right">
                                   <button type="button" class="btn btn-primary" id="membership-add">Add</button>
@@ -336,19 +346,19 @@ Designation
                             <hr>
                             <div class="form-group">
                                   <label for="institute-name"><i class="fas fa-university mr-1"></i> Institute Name:</label>
-                                  <input type="text" class="form-control" id="institute-name" placeholder="Enter Institute Name">
+                                  <input type="text" class="form-control" id="institute-name" placeholder="Enter Institute Name" readonly>
                             </div>
                             <div class="form-group">
                                   <label for="institute-designation"><i class="fas fa-list-ol mr-1"></i> Designation:</label>
-                                  <input type="text" class="form-control" id="institute-designation" placeholder="Enter Designation">
+                                  <input type="text" class="form-control" id="institute-designation" placeholder="Enter Designation" readonly>
                             </div>
                             <div class="form-group">
                               <label for="institute-date_of_join"><i class="fas fa-calendar-alt mr-1"></i> Date of Joining:</label>
-                              <input type="text" class="form-control" id="institute-date_of_join" placeholder="Enter Date of Joining" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric">
+                              <input type="text" class="form-control" id="institute-date_of_join" placeholder="Enter Date of Joining" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric" readonly>
                             </div>
                             <div class="form-group">
                               <label for="institute-date_of_leave"><i class="fas fa-calendar-alt mr-1"></i> Date of Leaving:</label>
-                              <input type="text" class="form-control" id="institute-date_of_leave" placeholder="Enter Date of Leaving" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric">
+                              <input type="text" class="form-control" id="institute-date_of_leave" placeholder="Enter Date of Leaving" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric" readonly>
                               <p class="text-danger">* For Ongoing Work, Leave this field Empty (For Till Date)</p>
                             </div>
                             <div class="form-group text-right">
@@ -385,19 +395,19 @@ Designation
                             <hr>
                             <div class="form-group">
                                   <label for="administrative-name"><i class="fas fa-university mr-1"></i> Workspace Name:</label>
-                                  <input type="text" class="form-control" id="administrative-name" placeholder="Enter Workspace Name">
+                                  <input type="text" class="form-control" id="administrative-name" placeholder="Enter Workspace Name" readonly>
                             </div>
                             <div class="form-group">
                                   <label for="administrative-designation"><i class="fas fa-list-ol mr-1"></i> Designation:</label>
-                                  <input type="text" class="form-control" id="administrative-designation" placeholder="Enter Designation">
+                                  <input type="text" class="form-control" id="administrative-designation" placeholder="Enter Designation" readonly>
                             </div>
                             <div class="form-group">
                               <label for="administrative-date_of_join"><i class="fas fa-calendar-alt mr-1"></i> Date of Joining:</label>
-                              <input type="text" class="form-control" id="administrative-date_of_join" placeholder="Enter Date of Joining" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric">
+                              <input type="text" class="form-control" id="administrative-date_of_join" placeholder="Enter Date of Joining" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric" readonly>
                             </div>
                             <div class="form-group">
                               <label for="administrative-date_of_leave"><i class="fas fa-calendar-alt mr-1"></i> Date of Leaving:</label>
-                              <input type="text" class="form-control" id="administrative-date_of_leave" placeholder="Enter Date of Leaving" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric">
+                              <input type="text" class="form-control" id="administrative-date_of_leave" placeholder="Enter Date of Leaving" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric" readonly>
                               <p class="text-danger">* For Ongoing Work, Leave this field Empty (For Till Date)</p>
                             </div>
                             <div class="form-group text-right">
@@ -434,19 +444,19 @@ Designation
                             <hr>
                             <div class="form-group">
                                   <label for="industry-name"><i class="fas fa-industry mr-1"></i> Industry Name:</label>
-                                  <input type="text" class="form-control" id="industry-name" placeholder="Enter Industry Name">
+                                  <input type="text" class="form-control" id="industry-name" placeholder="Enter Industry Name" readonly>
                             </div>
                             <div class="form-group">
                                   <label for="industry-designation"><i class="fas fa-list-ol mr-1"></i> Designation:</label>
-                                  <input type="text" class="form-control" id="industry-designation" placeholder="Enter Designation">
+                                  <input type="text" class="form-control" id="industry-designation" placeholder="Enter Designation" readonly>
                             </div>
                             <div class="form-group">
                               <label for="industry-date_of_join"><i class="fas fa-calendar-alt mr-1"></i> Date of Joining:</label>
-                              <input type="text" class="form-control" id="industry-date_of_join" placeholder="Enter Date of Joining" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric">
+                              <input type="text" class="form-control" id="industry-date_of_join" placeholder="Enter Date of Joining" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric" readonly>
                             </div>
                             <div class="form-group">
                               <label for="industry-date_of_leave"><i class="fas fa-calendar-alt mr-1"></i> Date of Leaving:</label>
-                              <input type="text" class="form-control" id="industry-date_of_leave" placeholder="Enter Date of Leaving" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric">
+                              <input type="text" class="form-control" id="industry-date_of_leave" placeholder="Enter Date of Leaving" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric" readonly>
                               <p class="text-danger">* For Ongoing Work, Leave this field Empty (For Till Date)</p>
                             </div>
                             <div class="form-group text-right">
@@ -483,15 +493,15 @@ Designation
                             <hr>
                             <div class="form-group">
                                   <label for="faculty-name"><i class="fas fa-university mr-1"></i> Name:</label>
-                                  <input type="text" class="form-control" id="faculty-name" placeholder="Enter Institute Name">
+                                  <input type="text" class="form-control" id="faculty-name" placeholder="Enter Institute Name" readonly>
                             </div>
                             <div class="form-group">
                                   <label for="faculty-designation"><i class="fas fa-list-ol mr-1"></i> Designation:</label>
-                                  <input type="text" class="form-control" id="faculty-designation" placeholder="Enter Designation">
+                                  <input type="text" class="form-control" id="faculty-designation" placeholder="Enter Designation" readonly>
                             </div>
                             <div class="form-group">
                               <label for="faculty-date_of_approval"><i class="fas fa-calendar-alt mr-1"></i> Date of Approval:</label>
-                              <input type="text" class="form-control" id="faculty-date_of_approval" placeholder="Enter Date of Approval" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric">
+                              <input type="text" class="form-control" id="faculty-date_of_approval" placeholder="Enter Date of Approval" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric" readonly>
                             </div>
                             <div class="form-group text-right">
                                   <button type="button" class="btn btn-primary" id="faculty-add">Add</button>

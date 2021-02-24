@@ -13,6 +13,8 @@ from django.shortcuts import render, redirect
 from .models import *
 from WebSite.settings import SECRET_KEY
 
+from Dashboard.models import *
+
 
 def student_create(request):
     if request.method == "POST":
@@ -102,7 +104,10 @@ def teacher_create(request):
 
         email_status = email_confirmation_send_to_teacher(user, request)
         if email_status:
-            Teacher.objects.create(teacher=user, college_data=teacher_data)
+            teacher = Teacher.objects.create(teacher=user, college_data=teacher_data)
+            Details.objects.create(teacher=teacher, name=teacher.college_data.name, email=teacher.college_data.email)
+            Designation.objects.create(teacher=teacher)
+
             user.is_active = False
             user.save()
 

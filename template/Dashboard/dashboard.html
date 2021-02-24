@@ -82,7 +82,7 @@ Dashboard
           <img src="{% static 'assets/image/Dashboard/avatar.png' %}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="/dashboard" class="d-block">Mohit Patil</a>
+          <a href="/dashboard" class="d-block" style="text-transform: capitalize;">{{ request.user.first_name }} {{ request.user.last_name }}</a>
         </div>
       </div>
 
@@ -214,20 +214,29 @@ Dashboard
 						<div class="card-body">
 							<strong><i class="fas fa-pen mr-1"></i> Name</strong>
 							<p class="text-muted">
-								Er. N.K.Patil
+                              {{ details.name }}
 							</p>
 
 							<hr>
 
 							<strong><i class="fas fa-phone mr-1"></i> Contact</strong>
 							<p class="text-muted">
-								www.navneetkpatil.com
-								<br>
-								navneetkpatil@yahoo.com
-								<br>
-								0257-2217221
-								<br>
-								9422275753
+								{% if details.website != None %}
+                                  {{ details.website }}
+                                  <br>
+                                {% endif %}
+
+								{{ details.email }}
+
+                                {% if details.phone != None %}
+                                <br>
+								  {{ details.phone }}
+                                {% endif %}
+
+                                {% if details.mobile != None %}
+                                <br>
+								  {{ details.mobile }}
+                                {% endif %}
 							</p>
 
 							<hr>
@@ -235,7 +244,11 @@ Dashboard
 							<strong><i class="fas fa-map-marker-alt mr-1"></i> Location</strong>
 
 							<p class="text-muted">
-								‘Bhagirathi’, 25/2, Samarth Colony, Near M.J.College, Jalgaon-425001, Maharashtra (India)
+                              {% if details.address != None %}
+								{{ details.address }}
+                              {% else %}
+                                  Not Available
+                              {% endif %}
 							</p>
 
 							<hr>
@@ -243,7 +256,11 @@ Dashboard
 							<strong><i class="fas fa-birthday-cake mr-1"></i> Date of Birth</strong>
 
 							<p class="text-muted">
-								23 September, 1969
+                              {% if details.date_of_birth != None %}
+								{{ details.date_of_birth }}
+                              {% else %}
+                                  Not Available
+                              {% endif %}
 							</p>
 						</div>
 					</div>

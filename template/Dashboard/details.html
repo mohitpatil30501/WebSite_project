@@ -10,7 +10,9 @@ Details
   <link rel="stylesheet" href="{% static 'assets/plugins/select2/css/select2.min.css' %}">
   <link rel="stylesheet" href="{% static 'assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
 
-
+  <script>
+    var data  = {{ data|safe }};
+  </script>
 {% endblock %}
 
 {% block body %}
@@ -86,7 +88,7 @@ Details
           <img src="{% static 'assets/image/Dashboard/avatar.png' %}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="/dashboard" class="d-block">Mohit Patil</a>
+          <a href="/dashboard" class="d-block" style="text-transform: capitalize;">{{ request.user.first_name }} {{ request.user.last_name }}</a>
         </div>
       </div>
 
@@ -184,51 +186,54 @@ Details
 			  <div class="card-body">
 				<div class="tab-content">
 					<div class="active tab-pane" id="details">
-                      <form method="post" action="#" id="details-form">
-                        {% csrf_token %}
-						<div class="card-body">
+
+                      <p class="text-danger text-center py-3" id="loading">Wait for connecting to Server</p>
+
+                      <div class="d-none" id="details-form">
+                        <div class="card-body">
                           <div class="form-group">
                             <label for="name"><i class="fas fa-pen mr-1"></i> Name:</label>
-                            <input type="text" class="form-control" id="name" placeholder="Enter Name">
+                            <input type="text" class="form-control" id="name" placeholder="Enter Name" name="name" value="{{data.name}}" readonly>
                           </div>
                           <hr>
                           <div class="form-group">
                             <label for="website"><i class="fas fa-globe mr-1"></i> Website:</label>
-                            <input type="text" class="form-control" id="website" placeholder="Enter Website">
+                            <input type="text" class="form-control" id="website" placeholder="Enter Website" name="website" {% if data.website != '' %}  value="{{data.website}}" {% endif %} readonly>
                           </div>
                           <hr>
                           <div class="form-group">
                             <label for="email"><i class="fas fa-envelope mr-1"></i> Email:</label>
-                            <input type="email" class="form-control" id="email" placeholder="Enter Email">
+                            <input type="email" class="form-control" id="email" placeholder="Enter Email"  name="email"  value="{{data.email}}" readonly>
                           </div>
                           <hr>
                           <div class="form-group">
                             <label for="phone"><i class="fas fa-phone mr-1"></i> Phone No:</label>
-                            <input type="text" class="form-control" id="phone" data-inputmask='"mask": "9999-9999999"' data-mask placeholder="Enter Phone No.">
+                            <input type="text" class="form-control" id="phone" data-inputmask='"mask": "9999-9999999"' data-mask placeholder="Enter Phone No." name="phone" {% if data.phone != '' %}  value="{{data.phone}}" {% endif %} readonly>
                           </div>
                           <hr>
                           <div class="form-group">
                             <label for="mobile"><i class="fas fa-mobile-alt mr-1"></i> Mobile No:</label>
-                            <input type="text" class="form-control" id="mobile" data-inputmask='"mask": "9999999999"' data-mask placeholder="Enter Mobile No.">
+                            <input type="text" class="form-control" id="mobile" data-inputmask='"mask": "9999999999"' data-mask placeholder="Enter Mobile No."  name="mobile" {% if data.mobile != '' %}  value="{{data.mobile}}" {% endif %} readonly>
                           </div>
                           <hr>
                           <div class="form-group">
                             <label for="address"><i class="fas fa-map-marker-alt mr-1"></i> Address:</label>
-                            <input type="text" class="form-control" id="address" placeholder="Enter Address">
+                            <input type="text" class="form-control" id="address" placeholder="Enter Address" name="address" {% if data.address != '' %}  value="{{data.address}}" {% endif %} readonly>
                           </div>
 
                           <hr>
                           <div class="form-group">
                             <label for="date_of_birth"><i class="fas fa-birthday-cake mr-1"></i> Date of Birth:</label>
-                            <input type="text" class="form-control" id="date_of_birth" placeholder="Enter Date of Birth" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric">
+                            <input type="text" class="form-control" id="date_of_birth" placeholder="Enter Date of Birth" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric" name="date_of_birth" {% if date_of_birth != '' %}  value="{{data.date_of_birth}}" {% endif %} readonly>
                           </div>
                           <hr>
                           <div class="form-group text-right">
+                            <span id="loading-animation" class="fas fa-spinner fa-pulse d-none"></span>
                             <button type="button" class="btn btn-primary" id="details-form-submit">Save</button>
                           </div>
+                        </div>
 
-						</div>
-                      </form>
+                      </div>
 					</div>
                   <!-- /.tab-pane -->
                 </div>
@@ -246,13 +251,13 @@ Details
 </div>
 
 <!-- InputMask -->
-<script src="{% static 'assets/plugins/moment/moment.min.js' %}"></script>
-<script src="{% static 'assets/plugins/inputmask/jquery.inputmask.min.js' %}"></script>
-<!-- Select2 -->
-<script src="{% static 'assets/plugins/select2/js/select2.full.min.js' %}"></script>
+  <script src="{% static 'assets/plugins/moment/moment.min.js' %}"></script>
+  <script src="{% static 'assets/plugins/inputmask/jquery.inputmask.min.js' %}"></script>
+  <!-- Select2 -->
+  <script src="{% static 'assets/plugins/select2/js/select2.full.min.js' %}"></script>
 
-<!-- page script -->
-<script src="{% static 'js/Dashboard/details.js' %}"></script>
+  <!-- page script -->
+  <script src="{% static 'js/Dashboard/details.js' %}"></script>
 
 </body>
 {% endblock %}
