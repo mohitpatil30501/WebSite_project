@@ -30,8 +30,8 @@ class Designation(models.Model):
 
 class SubjectOfInterest(models.Model):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
-    id = models.UUIDField(default=uuid.uuid4(), unique=True, primary_key=True)
-
+    id = models.UUIDField(default=uuid.uuid4(), unique=True)
+    index = models.AutoField(primary_key=True)
     subject_of_interest = models.CharField(max_length=100)
 
 

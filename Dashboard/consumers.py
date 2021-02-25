@@ -222,6 +222,28 @@ class DesignationConsumer(AsyncWebsocketConsumer):
                         'error': 'Not valid User..! Something Went Wrong, Please Try Again..!'
                     }
                 )
+        elif text_data_json['process'] == 'subject_of_interest-edit':
+            response = await self.edit_subject_of_interest(text_data_json['data'])
+            if response['status']:
+                await self.channel_layer.group_send(
+                            self.id,
+                            {
+                                'type': 'send_status',
+                                'process': 'subject_of_interest-edit',
+                                'status': True,
+                                'data': response['data']
+                            }
+                        )
+            else:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'subject_of_interest-edit',
+                        'status': False,
+                        'error': response['error']
+                    }
+                )
 
     async def send_status(self, event):
         if event['status']:
@@ -275,7 +297,7 @@ class DesignationConsumer(AsyncWebsocketConsumer):
         if data['subject_of_interest'] is not None or data['subject_of_interest'] != '':
             try:
                 teacher = Teacher.objects.filter(id=data['teacher']).get()
-                subject_of_interest = SubjectOfInterest.objects.create(teacher=teacher, subject_of_interest=data['subject_of_interest'])
+                subject_of_interest = SubjectOfInterest.objects.create(id=uuid.uuid4(), teacher=teacher, subject_of_interest=data['subject_of_interest'])
                 return {
                     'status': True,
                     'data': {
@@ -284,8 +306,35 @@ class DesignationConsumer(AsyncWebsocketConsumer):
                         'subject_of_interest': subject_of_interest.subject_of_interest,
                     }
                 }
-            except Exception as e:
-                print(e)
+            except:
+                return {
+                    'status': False,
+                    'error': 'Data Not Found..!'
+                }
+        else:
+            return {
+                'status': False,
+                'error': 'Empty Field is not Allowed..!'
+            }
+
+    @database_sync_to_async
+    def edit_subject_of_interest(self, data):
+        if data['subject_of_interest'] is not None or data['subject_of_interest'] != '':
+            try:
+                teacher = Teacher.objects.filter(id=data['teacher']).get()
+                subject_of_interest = SubjectOfInterest.objects.filter(id=data['id'], teacher=teacher).get()
+                subject_of_interest.subject_of_interest = data['subject_of_interest']
+                subject_of_interest.save()
+                return {
+                    'status': True,
+                    'data': {
+                        'teacher': str(subject_of_interest.teacher.id),
+                        'id': str(subject_of_interest.id),
+                        'subject_of_interest': subject_of_interest.subject_of_interest,
+                        'row': data['row'],
+                    }
+                }
+            except:
                 return {
                     'status': False,
                     'error': 'Data Not Found..!'

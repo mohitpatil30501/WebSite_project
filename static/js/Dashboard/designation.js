@@ -142,6 +142,9 @@ ssbtSocket.onmessage = function(e) {
             $("#interest-table-body").append(markup);
             $("#subject_of_interest-id").val('')
             $("#subject_of_interest").val('')
+
+            scrollToBottom($("#interest-table-box"), $("#interest-table-main"));
+
             alert('Saving Successful')
         }
         else{
@@ -149,6 +152,20 @@ ssbtSocket.onmessage = function(e) {
         }
         $('#loading-animation-subject_of_interest').addClass('d-none')
             $("#subject_of_interest-add").prop('disabled', false).text('Add');
+    }
+    else if(data_received['process'] === 'subject_of_interest-edit'){
+        if(data_received['status']){
+            var no = data_received['data']['row']
+            $("#interest-row-id-" + no.toString()).val(data_received['data']['id']),
+            $("#interest-row-subject_of_interest-" + no.toString()).val(data_received['data']['subject_of_interest']),
+
+
+            alert('Saving Successful')
+        }
+        else{
+            alert('Saving Failed, Try again..!', data_received['error'])
+        }
+        $("#interest-row-button-" + no.toString()).text('Edit').val('Edit').removeClass('btn-success').addClass('btn-primary').prop('disabled', false);
     }
 };
 
@@ -198,11 +215,12 @@ $(document).on('click', '#subject_of_interest-add', function(){
             interest_no++;
 
             markup = '<tr>'+
-                '<td> <input type="text" class="border-0 w-100 d-none" value="' + $("#subject_of_interest-id").val() + '" id="interest-row-id-' + interest_no + '" readonly="true"> <input type="text" class="border-0 w-100 text-muted" value="' + $("#subject_of_interest").val() + '" id="interest-row-subject_of_interest-' + interest_no + '" readonly="true"> </td>'+
-                '<td> <button type="button" class="btn btn-primary w-100" onclick="edit_subject_of_interest(' + interest_no + ')">Edit</button> </td>'+
+                '<td> <input type="text" class="border-0 w-100 d-none" value="' + $("#subject_of_interest-id").val() + '" id="interest-row-id-' + interest_no + '" readonly="true">'+
+                '<input type="text" class="border-0 w-100 text-muted" value="' + $("#subject_of_interest").val() + '" id="interest-row-subject_of_interest-' + interest_no + '" readonly="true"> </td>'+
+                '<td> <button type="button" class="btn btn-primary w-100" id="interest-row-button-' + interest_no + '" onclick="edit_subject_of_interest(' + interest_no + ')" value="Edit">Edit</button> </td>'+
                 '</tr>';
 
-            $("#interest-table-body").append(markup);
+            $("#interest-table-body").append(markup)
             $("#subject_of_interest-id").val('')
             $("#subject_of_interest").val('')
 
@@ -216,3 +234,35 @@ $(document).on('click', '#subject_of_interest-add', function(){
         $("#subject_of_interest-add").prop('disabled', false).text('Add');
     }
 })
+
+// Scroll Down table
+function scrollToBottom(box, table) {
+   box.scrollTop(table.height());
+}
+
+function edit_subject_of_interest(no){
+    if($("#interest-row-button-" + no.toString()).val() === "Edit"){
+        $("#interest-row-subject_of_interest-" + no.toString()).prop('readonly', false).removeClass('text-muted');
+
+        $("#interest-row-button-" + no.toString()).text('Save').val('Save').removeClass('btn-primary').addClass('btn-success');
+    }
+    else if($("#interest-row-button-" + no.toString()).val() === "Save"){
+        if($("#interest-row-subject_of_interest-" + no.toString()) !== ''){
+            $("#interest-row-subject_of_interest-" + no.toString()).prop('readonly', true).addClass('text-muted');
+            $("#interest-row-button-" + no.toString()).text('Saving...').prop('disabled', true);
+
+            ssbtSocket.send(JSON.stringify({
+                'process': 'subject_of_interest-edit',
+                'data':{
+                    'teacher': data.designation.teacher,
+                    'id': $("#interest-row-id-" + no.toString()).val(),
+                    'subject_of_interest': $("#interest-row-subject_of_interest-" + no.toString()).val(),
+                    'row': no,
+                }
+            }))
+        }
+        else{
+            alert("Empty field Not Allowed..!")
+        }
+    }
+}
