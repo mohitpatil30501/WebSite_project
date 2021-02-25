@@ -32,28 +32,71 @@ class SubjectOfInterest(models.Model):
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     id = models.UUIDField(default=uuid.uuid4(), unique=True)
     index = models.AutoField(primary_key=True)
+
     subject_of_interest = models.CharField(max_length=100)
 
 
-# class Academics(models.Model):
-#     pass
-#
-#
-# class ProfessionalMembership(models.Model):
-#     pass
-#
-#
-# class TeachingExperience(models.Model):
-#     pass
-#
-#
-# class AdministrativeExperience(models.Model):
-#     pass
-#
-#
-# class IndustrialExperience(models.Model):
-#     pass
-#
-#
-# class FacultyDevelopment(models.Model):
-#     pass
+class Academics(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    id = models.UUIDField(default=uuid.uuid4(), unique=True)
+    index = models.AutoField(primary_key=True)
+
+    degree = models.CharField(max_length=100)
+    specialisation = models.CharField(max_length=100)
+    university = models.CharField(max_length=100)
+    year = models.CharField(max_length=10)
+    remarks = models.CharField(max_length=100)
+
+
+class ProfessionalMembership(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    id = models.UUIDField(default=uuid.uuid4(), unique=True)
+    index = models.AutoField(primary_key=True)
+
+    society = models.CharField(max_length=100)
+    ist_no = models.CharField(max_length=100)
+    date_of_membership = models.CharField(max_length=10)
+
+
+class TeachingExperience(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    id = models.UUIDField(default=uuid.uuid4(), unique=True)
+    index = models.AutoField(primary_key=True)
+
+    name = models.CharField(max_length=100)
+    designation = models.CharField(max_length=100)
+    date_of_join = models.CharField(max_length=10)
+    date_of_leave = models.CharField(max_length=10)
+
+
+class AdministrativeExperience(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    id = models.UUIDField(default=uuid.uuid4(), unique=True)
+    index = models.AutoField(primary_key=True)
+
+    name = models.CharField(max_length=100)
+    designation = models.CharField(max_length=100)
+    date_of_join = models.CharField(max_length=10)
+    date_of_leave = models.CharField(max_length=10)
+
+
+class IndustrialExperience(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    id = models.UUIDField(default=uuid.uuid4(), unique=True)
+    index = models.AutoField(primary_key=True)
+
+    name = models.CharField(max_length=100)
+    designation = models.CharField(max_length=100)
+    date_of_join = models.CharField(max_length=10)
+    date_of_leave = models.CharField(max_length=10)
+
+
+class FacultyDevelopment(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    id = models.UUIDField(default=uuid.uuid4(), unique=True)
+    index = models.AutoField(primary_key=True)
+
+    name = models.CharField(max_length=100)
+    designation = models.CharField(max_length=100)
+    date_of_approval = models.CharField(max_length=10)
+

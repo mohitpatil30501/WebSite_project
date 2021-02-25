@@ -32,14 +32,14 @@ class DetailsConsumer(AsyncWebsocketConsumer):
                 response = await self.save_details(text_data_json['data'])
                 if response['status']:
                     await self.channel_layer.group_send(
-                                self.id,
-                                {
-                                    'type': 'send_status',
-                                    'process': 'details-form-submission',
-                                    'status': True,
-                                    'data': response['data']
-                                }
-                            )
+                        self.id,
+                        {
+                            'type': 'send_status',
+                            'process': 'details-form-submission',
+                            'status': True,
+                            'data': response['data']
+                        }
+                    )
                 else:
                     await self.channel_layer.group_send(
                         self.id,
@@ -161,14 +161,14 @@ class DesignationConsumer(AsyncWebsocketConsumer):
                 response = await self.save_designation(text_data_json['data'])
                 if response['status']:
                     await self.channel_layer.group_send(
-                                self.id,
-                                {
-                                    'type': 'send_status',
-                                    'process': 'designation-form-submission',
-                                    'status': True,
-                                    'data': response['data']
-                                }
-                            )
+                        self.id,
+                        {
+                            'type': 'send_status',
+                            'process': 'designation-form-submission',
+                            'status': True,
+                            'data': response['data']
+                        }
+                    )
                 else:
                     await self.channel_layer.group_send(
                         self.id,
@@ -194,14 +194,14 @@ class DesignationConsumer(AsyncWebsocketConsumer):
                 response = await self.add_subject_of_interest(text_data_json['data'])
                 if response['status']:
                     await self.channel_layer.group_send(
-                                self.id,
-                                {
-                                    'type': 'send_status',
-                                    'process': 'subject_of_interest-form-submission',
-                                    'status': True,
-                                    'data': response['data']
-                                }
-                            )
+                        self.id,
+                        {
+                            'type': 'send_status',
+                            'process': 'subject_of_interest-form-submission',
+                            'status': True,
+                            'data': response['data']
+                        }
+                    )
                 else:
                     await self.channel_layer.group_send(
                         self.id,
@@ -222,24 +222,354 @@ class DesignationConsumer(AsyncWebsocketConsumer):
                         'error': 'Not valid User..! Something Went Wrong, Please Try Again..!'
                     }
                 )
+        elif text_data_json['process'] == 'academics-form-submission':
+            if await self.verify_user(text_data_json['data']):
+                response = await self.add_academics(text_data_json['data'])
+                if response['status']:
+                    await self.channel_layer.group_send(
+                        self.id,
+                        {
+                            'type': 'send_status',
+                            'process': 'academics-form-submission',
+                            'status': True,
+                            'data': response['data']
+                        }
+                    )
+                else:
+                    await self.channel_layer.group_send(
+                        self.id,
+                        {
+                            'type': 'send_status',
+                            'process': 'academics-form-submission',
+                            'status': False,
+                            'error': response['error']
+                        }
+                    )
+            else:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'academics-form-submission',
+                        'status': False,
+                        'error': 'Not valid User..! Something Went Wrong, Please Try Again..!'
+                    }
+                )
+        elif text_data_json['process'] == 'membership-form-submission':
+            if await self.verify_user(text_data_json['data']):
+                response = await self.add_membership(text_data_json['data'])
+                if response['status']:
+                    await self.channel_layer.group_send(
+                        self.id,
+                        {
+                            'type': 'send_status',
+                            'process': 'membership-form-submission',
+                            'status': True,
+                            'data': response['data']
+                        }
+                    )
+                else:
+                    await self.channel_layer.group_send(
+                        self.id,
+                        {
+                            'type': 'send_status',
+                            'process': 'membership-form-submission',
+                            'status': False,
+                            'error': response['error']
+                        }
+                    )
+            else:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'membership-form-submission',
+                        'status': False,
+                        'error': 'Not valid User..! Something Went Wrong, Please Try Again..!'
+                    }
+                )
+        elif text_data_json['process'] == 'institute-form-submission':
+            if await self.verify_user(text_data_json['data']):
+                response = await self.add_institute(text_data_json['data'])
+                if response['status']:
+                    await self.channel_layer.group_send(
+                        self.id,
+                        {
+                            'type': 'send_status',
+                            'process': 'institute-form-submission',
+                            'status': True,
+                            'data': response['data']
+                        }
+                    )
+                else:
+                    await self.channel_layer.group_send(
+                        self.id,
+                        {
+                            'type': 'send_status',
+                            'process': 'institute-form-submission',
+                            'status': False,
+                            'error': response['error']
+                        }
+                    )
+            else:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'institute-form-submission',
+                        'status': False,
+                        'error': 'Not valid User..! Something Went Wrong, Please Try Again..!'
+                    }
+                )
+        elif text_data_json['process'] == 'administrative-form-submission':
+            if await self.verify_user(text_data_json['data']):
+                response = await self.add_administrative(text_data_json['data'])
+                if response['status']:
+                    await self.channel_layer.group_send(
+                        self.id,
+                        {
+                            'type': 'send_status',
+                            'process': 'administrative-form-submission',
+                            'status': True,
+                            'data': response['data']
+                        }
+                    )
+                else:
+                    await self.channel_layer.group_send(
+                        self.id,
+                        {
+                            'type': 'send_status',
+                            'process': 'administrative-form-submission',
+                            'status': False,
+                            'error': response['error']
+                        }
+                    )
+            else:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'administrative-form-submission',
+                        'status': False,
+                        'error': 'Not valid User..! Something Went Wrong, Please Try Again..!'
+                    }
+                )
+        elif text_data_json['process'] == 'industry-form-submission':
+            if await self.verify_user(text_data_json['data']):
+                response = await self.add_industry(text_data_json['data'])
+                if response['status']:
+                    await self.channel_layer.group_send(
+                        self.id,
+                        {
+                            'type': 'send_status',
+                            'process': 'industry-form-submission',
+                            'status': True,
+                            'data': response['data']
+                        }
+                    )
+                else:
+                    await self.channel_layer.group_send(
+                        self.id,
+                        {
+                            'type': 'send_status',
+                            'process': 'industry-form-submission',
+                            'status': False,
+                            'error': response['error']
+                        }
+                    )
+            else:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'industry-form-submission',
+                        'status': False,
+                        'error': 'Not valid User..! Something Went Wrong, Please Try Again..!'
+                    }
+                )
+        elif text_data_json['process'] == 'faculty-form-submission':
+            if await self.verify_user(text_data_json['data']):
+                response = await self.add_faculty(text_data_json['data'])
+                if response['status']:
+                    await self.channel_layer.group_send(
+                        self.id,
+                        {
+                            'type': 'send_status',
+                            'process': 'faculty-form-submission',
+                            'status': True,
+                            'data': response['data']
+                        }
+                    )
+                else:
+                    await self.channel_layer.group_send(
+                        self.id,
+                        {
+                            'type': 'send_status',
+                            'process': 'faculty-form-submission',
+                            'status': False,
+                            'error': response['error']
+                        }
+                    )
+            else:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'faculty-form-submission',
+                        'status': False,
+                        'error': 'Not valid User..! Something Went Wrong, Please Try Again..!'
+                    }
+                )
         elif text_data_json['process'] == 'subject_of_interest-edit':
             response = await self.edit_subject_of_interest(text_data_json['data'])
             if response['status']:
                 await self.channel_layer.group_send(
-                            self.id,
-                            {
-                                'type': 'send_status',
-                                'process': 'subject_of_interest-edit',
-                                'status': True,
-                                'data': response['data']
-                            }
-                        )
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'subject_of_interest-edit',
+                        'status': True,
+                        'data': response['data']
+                    }
+                )
             else:
                 await self.channel_layer.group_send(
                     self.id,
                     {
                         'type': 'send_status',
                         'process': 'subject_of_interest-edit',
+                        'status': False,
+                        'error': response['error']
+                    }
+                )
+        elif text_data_json['process'] == 'academics-edit':
+            response = await self.edit_academics(text_data_json['data'])
+            if response['status']:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'academics-edit',
+                        'status': True,
+                        'data': response['data']
+                    }
+                )
+            else:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'academics-edit',
+                        'status': False,
+                        'error': response['error']
+                    }
+                )
+        elif text_data_json['process'] == 'membership-edit':
+            response = await self.edit_membership(text_data_json['data'])
+            if response['status']:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'membership-edit',
+                        'status': True,
+                        'data': response['data']
+                    }
+                )
+            else:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'membership-edit',
+                        'status': False,
+                        'error': response['error']
+                    }
+                )
+        elif text_data_json['process'] == 'institute-edit':
+            response = await self.edit_institute(text_data_json['data'])
+            if response['status']:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'institute-edit',
+                        'status': True,
+                        'data': response['data']
+                    }
+                )
+            else:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'institute-edit',
+                        'status': False,
+                        'error': response['error']
+                    }
+                )
+        elif text_data_json['process'] == 'administrative-edit':
+            response = await self.edit_administrative(text_data_json['data'])
+            if response['status']:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'administrative-edit',
+                        'status': True,
+                        'data': response['data']
+                    }
+                )
+            else:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'administrative-edit',
+                        'status': False,
+                        'error': response['error']
+                    }
+                )
+        elif text_data_json['process'] == 'industry-edit':
+            response = await self.edit_industry(text_data_json['data'])
+            if response['status']:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'industry-edit',
+                        'status': True,
+                        'data': response['data']
+                    }
+                )
+            else:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'industry-edit',
+                        'status': False,
+                        'error': response['error']
+                    }
+                )
+        elif text_data_json['process'] == 'faculty-edit':
+            response = await self.edit_faculty(text_data_json['data'])
+            if response['status']:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'faculty-edit',
+                        'status': True,
+                        'data': response['data']
+                    }
+                )
+            else:
+                await self.channel_layer.group_send(
+                    self.id,
+                    {
+                        'type': 'send_status',
+                        'process': 'faculty-edit',
                         'status': False,
                         'error': response['error']
                     }
@@ -297,13 +627,218 @@ class DesignationConsumer(AsyncWebsocketConsumer):
         if data['subject_of_interest'] is not None or data['subject_of_interest'] != '':
             try:
                 teacher = Teacher.objects.filter(id=data['teacher']).get()
-                subject_of_interest = SubjectOfInterest.objects.create(id=uuid.uuid4(), teacher=teacher, subject_of_interest=data['subject_of_interest'])
+                subject_of_interest = SubjectOfInterest.objects.create(id=uuid.uuid4(), teacher=teacher,
+                                                                       subject_of_interest=data['subject_of_interest'])
                 return {
                     'status': True,
                     'data': {
                         'teacher': str(subject_of_interest.teacher.id),
                         'id': str(subject_of_interest.id),
                         'subject_of_interest': subject_of_interest.subject_of_interest,
+                    }
+                }
+            except:
+                return {
+                    'status': False,
+                    'error': 'Data Not Found..!'
+                }
+        else:
+            return {
+                'status': False,
+                'error': 'Empty Field is not Allowed..!'
+            }
+
+    @database_sync_to_async
+    def add_academics(self, data):
+        if (data['degree'] is not None or data['degree'] != '') and (
+                data['specialisation'] is not None or data['specialisation'] != '') and (
+                data['university'] is not None or data['university'] != '') and (
+                data['year'] is not None or data['year'] != '') and (
+                data['remarks'] is not None or data['remarks'] != ''):
+            try:
+                teacher = Teacher.objects.filter(id=data['teacher']).get()
+                academics = Academics.objects.create(id=uuid.uuid4(), teacher=teacher, degree=data['degree'],
+                                                     specialisation=data['specialisation'],
+                                                     university=data['university'], year=data['year'],
+                                                     remarks=data['remarks'])
+                return {
+                    'status': True,
+                    'data': {
+                        'teacher': str(academics.teacher.id),
+                        'id': str(academics.id),
+                        'degree': academics.degree,
+                        'specialisation': academics.specialisation,
+                        'university': academics.university,
+                        'year': academics.year,
+                        'remarks': academics.remarks,
+                    }
+                }
+            except:
+                return {
+                    'status': False,
+                    'error': 'Data Not Found..!'
+                }
+        else:
+            return {
+                'status': False,
+                'error': 'Empty Field is not Allowed..!'
+            }
+
+    @database_sync_to_async
+    def add_membership(self, data):
+        if (data['society'] is not None or data['society'] != '') and (
+                data['ist_no'] is not None or data['ist_no'] != '') and (
+                data['date_of_membership'] is not None or data['date_of_membership'] != ''):
+            try:
+                teacher = Teacher.objects.filter(id=data['teacher']).get()
+                membership = ProfessionalMembership.objects.create(id=uuid.uuid4(), teacher=teacher,
+                                                                   society=data['society'],
+                                                                   ist_no=data['ist_no'],
+                                                                   date_of_membership=data['date_of_membership'])
+                return {
+                    'status': True,
+                    'data': {
+                        'teacher': str(membership.teacher.id),
+                        'id': str(membership.id),
+                        'society': membership.society,
+                        'ist_no': membership.ist_no,
+                        'date_of_membership': membership.date_of_membership
+                    }
+                }
+            except:
+                return {
+                    'status': False,
+                    'error': 'Data Not Found..!'
+                }
+        else:
+            return {
+                'status': False,
+                'error': 'Empty Field is not Allowed..!'
+            }
+
+    @database_sync_to_async
+    def add_institute(self, data):
+        if (data['name'] is not None or data['name'] != '') and (
+                data['designation'] is not None or data['designation'] != '') and (
+                data['date_of_join'] is not None or data['date_of_join'] != '') and (
+                data['date_of_leave'] is not None or data['date_of_leave'] != ''):
+            try:
+                teacher = Teacher.objects.filter(id=data['teacher']).get()
+                institute = TeachingExperience.objects.create(id=uuid.uuid4(), teacher=teacher, name=data['name'],
+                                                              designation=data['designation'],
+                                                              date_of_join=data['date_of_join'],
+                                                              date_of_leave=data['date_of_leave'])
+                return {
+                    'status': True,
+                    'data': {
+                        'teacher': str(institute.teacher.id),
+                        'id': str(institute.id),
+                        'name': institute.name,
+                        'designation': institute.designation,
+                        'date_of_join': institute.date_of_join,
+                        'date_of_leave': institute.date_of_leave,
+                    }
+                }
+            except:
+                return {
+                    'status': False,
+                    'error': 'Data Not Found..!'
+                }
+        else:
+            return {
+                'status': False,
+                'error': 'Empty Field is not Allowed..!'
+            }
+
+    @database_sync_to_async
+    def add_administrative(self, data):
+        if (data['name'] is not None or data['name'] != '') and (
+                data['designation'] is not None or data['designation'] != '') and (
+                data['date_of_join'] is not None or data['date_of_join'] != '') and (
+                data['date_of_leave'] is not None or data['date_of_leave'] != ''):
+            try:
+                teacher = Teacher.objects.filter(id=data['teacher']).get()
+                administrative = AdministrativeExperience.objects.create(id=uuid.uuid4(), teacher=teacher,
+                                                                         name=data['name'],
+                                                                         designation=data['designation'],
+                                                                         date_of_join=data['date_of_join'],
+                                                                         date_of_leave=data['date_of_leave'])
+                return {
+                    'status': True,
+                    'data': {
+                        'teacher': str(administrative.teacher.id),
+                        'id': str(administrative.id),
+                        'name': administrative.name,
+                        'designation': administrative.designation,
+                        'date_of_join': administrative.date_of_join,
+                        'date_of_leave': administrative.date_of_leave,
+                    }
+                }
+            except:
+                return {
+                    'status': False,
+                    'error': 'Data Not Found..!'
+                }
+        else:
+            return {
+                'status': False,
+                'error': 'Empty Field is not Allowed..!'
+            }
+
+    @database_sync_to_async
+    def add_industry(self, data):
+        if (data['name'] is not None or data['name'] != '') and (
+                data['designation'] is not None or data['designation'] != '') and (
+                data['date_of_join'] is not None or data['date_of_join'] != '') and (
+                data['date_of_leave'] is not None or data['date_of_leave'] != ''):
+            try:
+                teacher = Teacher.objects.filter(id=data['teacher']).get()
+                industry = IndustrialExperience.objects.create(id=uuid.uuid4(), teacher=teacher,
+                                                               name=data['name'],
+                                                               designation=data['designation'],
+                                                               date_of_join=data['date_of_join'],
+                                                               date_of_leave=data['date_of_leave'])
+                return {
+                    'status': True,
+                    'data': {
+                        'teacher': str(industry.teacher.id),
+                        'id': str(industry.id),
+                        'name': industry.name,
+                        'designation': industry.designation,
+                        'date_of_join': industry.date_of_join,
+                        'date_of_leave': industry.date_of_leave,
+                    }
+                }
+            except:
+                return {
+                    'status': False,
+                    'error': 'Data Not Found..!'
+                }
+        else:
+            return {
+                'status': False,
+                'error': 'Empty Field is not Allowed..!'
+            }
+
+    @database_sync_to_async
+    def add_faculty(self, data):
+        if (data['name'] is not None or data['name'] != '') and (
+                data['designation'] is not None or data['designation'] != '') and (
+                data['date_of_approval'] is not None or data['date_of_approval'] != ''):
+            try:
+                teacher = Teacher.objects.filter(id=data['teacher']).get()
+                faculty = FacultyDevelopment.objects.create(id=uuid.uuid4(), teacher=teacher,
+                                                            name=data['name'],
+                                                            designation=data['designation'],
+                                                            date_of_approval=data['date_of_approval'])
+                return {
+                    'status': True,
+                    'data': {
+                        'teacher': str(faculty.teacher.id),
+                        'id': str(faculty.id),
+                        'name': faculty.name,
+                        'designation': faculty.designation,
+                        'date_of_approval': faculty.date_of_approval,
                     }
                 }
             except:
@@ -331,6 +866,225 @@ class DesignationConsumer(AsyncWebsocketConsumer):
                         'teacher': str(subject_of_interest.teacher.id),
                         'id': str(subject_of_interest.id),
                         'subject_of_interest': subject_of_interest.subject_of_interest,
+                        'row': data['row'],
+                    }
+                }
+            except:
+                return {
+                    'status': False,
+                    'error': 'Data Not Found..!'
+                }
+        else:
+            return {
+                'status': False,
+                'error': 'Empty Field is not Allowed..!'
+            }
+
+    @database_sync_to_async
+    def edit_academics(self, data):
+        if (data['degree'] is not None or data['degree'] != '') and (
+                data['specialisation'] is not None or data['specialisation'] != '') and (
+                data['university'] is not None or data['university'] != '') and (
+                data['year'] is not None or data['year'] != '') and (
+                data['remarks'] is not None or data['remarks'] != ''):
+            try:
+                teacher = Teacher.objects.filter(id=data['teacher']).get()
+                academics = Academics.objects.filter(id=data['id'], teacher=teacher).get()
+                academics.degree = data['degree']
+                academics.specialisation = data['specialisation']
+                academics.university = data['university']
+                academics.year = data['year']
+                academics.remarks = data['remarks']
+                academics.save()
+                return {
+                    'status': True,
+                    'data': {
+                        'teacher': str(academics.teacher.id),
+                        'id': str(academics.id),
+                        'degree': academics.degree,
+                        'specialisation': academics.specialisation,
+                        'university': academics.university,
+                        'year': academics.year,
+                        'remarks': academics.remarks,
+                        'row': data['row'],
+                    }
+                }
+            except:
+                return {
+                    'status': False,
+                    'error': 'Data Not Found..!'
+                }
+        else:
+            return {
+                'status': False,
+                'error': 'Empty Field is not Allowed..!'
+            }
+
+    @database_sync_to_async
+    def edit_membership(self, data):
+        if (data['society'] is not None or data['society'] != '') and (
+                data['ist_no'] is not None or data['ist_no'] != '') and (
+                data['date_of_membership'] is not None or data['date_of_membership'] != ''):
+            try:
+                teacher = Teacher.objects.filter(id=data['teacher']).get()
+                membership = ProfessionalMembership.objects.filter(id=data['id'], teacher=teacher).get()
+                membership.society = data['society']
+                membership.ist_no = data['ist_no']
+                membership.date_of_membership = data['date_of_membership']
+                membership.save()
+                return {
+                    'status': True,
+                    'data': {
+                        'teacher': str(membership.teacher.id),
+                        'id': str(membership.id),
+                        'society': membership.society,
+                        'ist_no': membership.ist_no,
+                        'date_of_membership': membership.date_of_membership,
+                        'row': data['row'],
+                    }
+                }
+            except:
+                return {
+                    'status': False,
+                    'error': 'Data Not Found..!'
+                }
+        else:
+            return {
+                'status': False,
+                'error': 'Empty Field is not Allowed..!'
+            }
+
+    @database_sync_to_async
+    def edit_institute(self, data):
+        if (data['name'] is not None or data['name'] != '') and (
+                data['designation'] is not None or data['designation'] != '') and (
+                data['date_of_join'] is not None or data['date_of_join'] != '') and (
+                data['date_of_leave'] is not None or data['date_of_leave'] != ''):
+            try:
+                teacher = Teacher.objects.filter(id=data['teacher']).get()
+                institute = TeachingExperience.objects.filter(id=data['id'], teacher=teacher).get()
+                institute.name = data['name']
+                institute.designation = data['designation']
+                institute.date_of_join = data['date_of_join']
+                institute.date_of_leave = data['date_of_leave']
+                institute.save()
+                return {
+                    'status': True,
+                    'data': {
+                        'teacher': str(institute.teacher.id),
+                        'id': str(institute.id),
+                        'name': institute.name,
+                        'designation': institute.designation,
+                        'date_of_join': institute.date_of_join,
+                        'date_of_leave': institute.date_of_leave,
+                        'row': data['row'],
+                    }
+                }
+            except:
+                return {
+                    'status': False,
+                    'error': 'Data Not Found..!'
+                }
+        else:
+            return {
+                'status': False,
+                'error': 'Empty Field is not Allowed..!'
+            }
+
+    @database_sync_to_async
+    def edit_administrative(self, data):
+        if (data['name'] is not None or data['name'] != '') and (
+                data['designation'] is not None or data['designation'] != '') and (
+                data['date_of_join'] is not None or data['date_of_join'] != '') and (
+                data['date_of_leave'] is not None or data['date_of_leave'] != ''):
+            try:
+                teacher = Teacher.objects.filter(id=data['teacher']).get()
+                administrative = AdministrativeExperience.objects.filter(id=data['id'], teacher=teacher).get()
+                administrative.name = data['name']
+                administrative.designation = data['designation']
+                administrative.date_of_join = data['date_of_join']
+                administrative.date_of_leave = data['date_of_leave']
+                administrative.save()
+                return {
+                    'status': True,
+                    'data': {
+                        'teacher': str(administrative.teacher.id),
+                        'id': str(administrative.id),
+                        'name': administrative.name,
+                        'designation': administrative.designation,
+                        'date_of_join': administrative.date_of_join,
+                        'date_of_leave': administrative.date_of_leave,
+                        'row': data['row'],
+                    }
+                }
+            except:
+                return {
+                    'status': False,
+                    'error': 'Data Not Found..!'
+                }
+        else:
+            return {
+                'status': False,
+                'error': 'Empty Field is not Allowed..!'
+            }
+
+    @database_sync_to_async
+    def edit_industry(self, data):
+        if (data['name'] is not None or data['name'] != '') and (
+                data['designation'] is not None or data['designation'] != '') and (
+                data['date_of_join'] is not None or data['date_of_join'] != '') and (
+                data['date_of_leave'] is not None or data['date_of_leave'] != ''):
+            try:
+                teacher = Teacher.objects.filter(id=data['teacher']).get()
+                industry = IndustrialExperience.objects.filter(id=data['id'], teacher=teacher).get()
+                industry.name = data['name']
+                industry.designation = data['designation']
+                industry.date_of_join = data['date_of_join']
+                industry.date_of_leave = data['date_of_leave']
+                industry.save()
+                return {
+                    'status': True,
+                    'data': {
+                        'teacher': str(industry.teacher.id),
+                        'id': str(industry.id),
+                        'name': industry.name,
+                        'designation': industry.designation,
+                        'date_of_join': industry.date_of_join,
+                        'date_of_leave': industry.date_of_leave,
+                        'row': data['row'],
+                    }
+                }
+            except:
+                return {
+                    'status': False,
+                    'error': 'Data Not Found..!'
+                }
+        else:
+            return {
+                'status': False,
+                'error': 'Empty Field is not Allowed..!'
+            }
+
+    @database_sync_to_async
+    def edit_faculty(self, data):
+        if (data['name'] is not None or data['name'] != '') and (
+                data['designation'] is not None or data['designation'] != '') and (
+                data['date_of_approval'] is not None or data['date_of_approval'] != ''):
+            try:
+                teacher = Teacher.objects.filter(id=data['teacher']).get()
+                faculty = FacultyDevelopment.objects.filter(id=data['id'], teacher=teacher).get()
+                faculty.name = data['name']
+                faculty.designation = data['designation']
+                faculty.date_of_approval = data['date_of_approval']
+                faculty.save()
+                return {
+                    'status': True,
+                    'data': {
+                        'teacher': str(faculty.teacher.id),
+                        'id': str(faculty.id),
+                        'name': faculty.name,
+                        'designation': faculty.designation,
+                        'date_of_approval': faculty.date_of_approval,
                         'row': data['row'],
                     }
                 }

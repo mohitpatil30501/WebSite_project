@@ -269,33 +269,42 @@ Dashboard
 						<div class="card-body">
 							<strong><i class="fas fa-pencil-alt mr-1"></i> Designation</strong>
 							<p class="text-muted">
-								Associate Professor,
-								<br>
-								Department of Mechanical Engineering
-								<br>
-								SSBT’s College of Engg. & Tech., Jalgaon.
+                              {% if designation.designation.designation != None or designation.designation.department != None or designation.designation.institute != None %}
+                                {% if designation.designation.designation != None %}
+                                    {{ designation.designation.designation }}
+                                  <br>
+                                {% endif %}
+                                {% if designation.designation.department != None %}
+                                  {{ designation.designation.department }}
+                                  <br>
+                                {% endif %}
+                                {% if designation.designation.institute != None %}
+                                  {{ designation.designation.institute }}
+                                {% endif %}
+
+                              {% else %}
+                                Not Available
+                              {% endif %}
 							</p>
 
 							<hr>
 
 							<strong><i class="fas fa-book-open mr-1"></i> Subject of Interest</strong>
 							<p class="text-muted">
-								Engg. Mechanics
-								<br>
-								Engg. Drawing
-								<br>
-								Strength Of Material
-								<br>
-								Thermodynamics
-								<br>
-								Metrology & Quality Control
-								<br>
-								Operation Research
+                              {% if designation.subject_of_interest %}
+                                {% for subject in designation.subject_of_interest %}
+                                    {{ subject.subject_of_interest }}
+                                    <br>
+                                {% endfor %}
+                              {% else %}
+                                Not Available
+                              {% endif %}
 							</p>
 
 							<hr>
 
 							<strong><i class="fas fa-graduation-cap mr-1"></i> Academics</strong>
+                            {% if designation.academics %}
 								<div class="card">
 								  <div class="card-body table-responsive p-0" style="max-height: 300px;">
 									<table class="table table-head-fixed text-nowrap">
@@ -309,53 +318,87 @@ Dashboard
 										</tr>
 									  </thead>
 									  <tbody>
+                                      {% for academic in designation.academics %}
 										<tr>
-										  <td class="text-muted">B.E</td>
-										  <td class="text-muted">Production Engineering</td>
-										  <td class="text-muted">Pune</td>
-										  <td class="text-muted">1991</td>
-										  <td class="text-muted">First Class (60%)</td>
+										  <td class="text-muted">{{ academic.degree }}</td>
+										  <td class="text-muted">{{ academic.specialisation }}</td>
+										  <td class="text-muted">{{ academic.university }}</td>
+										  <td class="text-muted">{{ academic.year }}</td>
+										  <td class="text-muted">{{ academic.remarks }}</td>
 										</tr>
+                                      {% endfor %}
 									  </tbody>
 									</table>
 								  </div>
 								</div>
+                            {% else %}
+                              <p class="text-muted">Not Available</p>
+                            {% endif %}
 
                             <hr>
 
 							<strong><i class="fas fa-pen-alt mr-1"></i> Professional Membership</strong>
-                            <ul>
-                                <li class="text-muted">Life Member of ISTE (LM11984) from 30-03-92</li>
-                                <li class="text-muted">Life Member of ISTE (LM11984) from 30-03-92</li>
-                                <li class="text-muted">Life Member of ISTE (LM11984) from 30-03-92</li>
-                                <li class="text-muted">Life Member of ISTE (LM11984) from 30-03-92</li>
-                                <li class="text-muted">Life Member of ISTE (LM11984) from 30-03-92</li>
-                            </ul>
+                            {% if designation.memberships %}
+                              <ul>
+                                {% for membership in designation.memberships %}
+                                  <li class="text-muted">Member of {{ membership.society }} ( {{ membership.ist_no }} ) from {{ membership.date_of_membership }}</li>
+                                {% endfor %}
+                              </ul>
+                            {% else %}
+                              <p class="text-muted">Not Available</p>
+                            {% endif %}
 
                             <hr>
 
 							<strong><i class="fas fa-chalkboard-teacher mr-1"></i> Teaching Experience</strong>
-                            <ul>
-                                <li class="text-muted">Associate. Professor in Mechanical Engg. From 1st July, 2010 till date at SSBT‟s C.O.E.T., Jalgaon.</li>
-                            </ul>
+                            {% if designation.institutes %}
+                              <ul>
+                                {% for institute in designation.institutes %}
+                                  <li class="text-muted">{{ institute.designation }} from {{ institute.date_of_join }} till {% if institute.date_of_leave == "Ongoing" %}data{% else %}{{institute.date_of_leave}}{% endif %} at {{ institute.name }}</li>
+                                {% endfor %}
+                              </ul>
+                            {% else %}
+                              <p class="text-muted">Not Available</p>
+                            {% endif %}
 
                             <hr>
 
 							<strong><i class="fas fa-user mr-1"></i> Administrative Experience</strong>
-                            <ul>
-                                <li class="text-muted">Chairman, Adhoc Board of Studies for Production and Automobile Engineering. of North Maharashtra University, Jalgaon in the year (2001-03)</li>
-                                <li class="text-muted">Chairman, Adhoc Board of Studies for Production and Automobile Engineering. of North Maharashtra University, Jalgaon in the year (2001-03)</li>
-                                <li class="text-muted">Chairman, Adhoc Board of Studies for Production and Automobile Engineering. of North Maharashtra University, Jalgaon in the year (2001-03)</li>
-                            </ul>
+                            {% if designation.administratives %}
+                              <ul>
+                                {% for administrative in designation.administratives %}
+                                  <li class="text-muted">{{ administrative.designation }} from {{ administrative.date_of_join }} till {% if administrative.date_of_leave == "Ongoing" %}data{% else %}{{administrative.date_of_leave}}{% endif %} at {{ administrative.name }}</li>
+                                {% endfor %}
+                              </ul>
+                            {% else %}
+                              <p class="text-muted">Not Available</p>
+                            {% endif %}
+
+                            <hr>
+
+                            <strong><i class="fas fa-user mr-1"></i> Industrial Experience</strong>
+                            {% if designation.industrys %}
+                              <ul>
+                                {% for industry in designation.industrys %}
+                                  <li class="text-muted">{{ industry.designation }} from {{ industry.date_of_join }} till {% if industry.date_of_leave == "Ongoing" %}data{% else %}{{industry.date_of_leave}}{% endif %} at {{ industry.name }}</li>
+                                {% endfor %}
+                              </ul>
+                            {% else %}
+                              <p class="text-muted">Not Available</p>
+                            {% endif %}
 
                             <hr>
 
                             <strong><i class="fas fa-file-alt mr-1"></i> Faculty Development</strong>
-                            <ul>
-                                <li class="text-muted">Approval to the appointment of College Lecturer in Production Engineering (18-02-12 to 30-04-02)</li>
-                                <li class="text-muted">Approval to the appointment of College Lecturer in Production Engineering (18-02-12 to 30-04-02)</li>
-                                <li class="text-muted">Approval to the appointment of College Lecturer in Production Engineering (18-02-12 to 30-04-02)</li>
-                            </ul>
+                            {% if designation.facultys %}
+                              <ul>
+                                {% for faculty in designation.facultys %}
+                                  <li class="text-muted">Approval to the appointment of {{ faculty.designation }} in {{ faculty.name }} ( Approved on {{faculty.date_of_approval}} )</li>
+                                {% endfor %}
+                              </ul>
+                            {% else %}
+                              <p class="text-muted">Not Available</p>
+                            {% endif %}
 
 						</div>
 					</div>

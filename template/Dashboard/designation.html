@@ -249,6 +249,10 @@ Designation
                             <h3><i class="fas fa-user-graduate mr-1"></i> Academics</h3>
                             <hr>
                             <div class="form-group">
+                                  <input type="text" class="form-control d-none" id="academics-id" value="" placeholder="ID" readonly>
+                            </div>
+
+                            <div class="form-group">
                                   <label for="degree"><i class="fas fa-graduation-cap mr-1"></i> Degree:</label>
                                   <input type="text" class="form-control" id="degree" placeholder="Enter Degree" readonly>
                             </div>
@@ -261,19 +265,20 @@ Designation
                                   <input type="text" class="form-control" id="university" placeholder="Enter University" readonly>
                             </div>
                             <div class="form-group">
-                                  <label for="academic-year"><i class="fas fa-calendar-alt mr-1"></i> Year:</label>
-                                  <input type="text" class="form-control" id="academic-year" placeholder="Enter Year" readonly>
+                                  <label for="academics-year"><i class="fas fa-calendar-alt mr-1"></i> Year:</label>
+                                  <input type="text" class="form-control" id="academics-year" placeholder="Enter Year" readonly>
                             </div>
                             <div class="form-group">
                                   <label for="remarks"><i class="fas fa-marker mr-1"></i> Remarks:</label>
                                   <input type="text" class="form-control" id="remarks" placeholder="Enter Remarks" readonly>
                             </div>
                             <div class="form-group text-right">
-                                  <button type="button" class="btn btn-primary" id="academics-add">Add</button>
+                              <span id="loading-animation-academics" class="fas fa-spinner fa-pulse d-none"></span>
+                              <button type="button" class="btn btn-primary" id="academics-add">Add</button>
                             </div>
-                            <div class="card">
-                              <div class="card-body table-responsive p-0" style="max-height: 300px;">
-                                <table class="table table-head-fixed text-nowrap">
+                            <div class="card d-none" id="academics-table">
+                              <div class="card-body table-responsive p-0" id="academics-table-box" style="max-height: 300px;">
+                                <table class="table table-head-fixed text-nowrap" id="academics-table-main">
                                   <thead>
                                     <tr>
                                       <th>Degree</th>
@@ -284,15 +289,8 @@ Designation
                                       <th>Edit</th>
                                     </tr>
                                   </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td><button type="button" class="btn btn-primary w-100">Edit</button></td>
-                                    </tr>
+                                  <tbody id="academics-table-body">
+
                                   </tbody>
                                 </table>
                               </div>
@@ -302,6 +300,10 @@ Designation
                           <div class="pt-3">
                             <h3><i class="fas fa-pencil-alt mr-1"></i> Professional Membership</h3>
                             <hr>
+                            <div class="form-group">
+                                  <input type="text" class="form-control d-none" id="membership-id" value="" placeholder="ID" readonly>
+                            </div>
+
                             <div class="form-group">
                                   <label for="society"><i class="fas fa-university mr-1"></i> Society Name:</label>
                                   <input type="text" class="form-control" id="society" placeholder="Enter Society Name" readonly>
@@ -315,11 +317,12 @@ Designation
                               <input type="text" class="form-control" id="date_of_membership" placeholder="Enter Date of Membership" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric" readonly>
                             </div>
                             <div class="form-group text-right">
-                                  <button type="button" class="btn btn-primary" id="membership-add">Add</button>
+                              <span id="loading-animation-membership" class="fas fa-spinner fa-pulse d-none"></span>
+                              <button type="button" class="btn btn-primary" id="membership-add">Add</button>
                             </div>
-                            <div class="card">
-                              <div class="card-body table-responsive p-0" style="max-height: 300px;">
-                                <table class="table table-head-fixed text-nowrap">
+                            <div class="card d-none" id="membership-table">
+                              <div class="card-body table-responsive p-0" id="membership-table-box" style="max-height: 300px;">
+                                <table class="table table-head-fixed text-nowrap" id="membership-table-main">
                                   <thead>
                                     <tr>
                                       <th>Society</th>
@@ -328,13 +331,8 @@ Designation
                                       <th>Edit</th>
                                     </tr>
                                   </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td><button type="button" class="btn btn-primary w-100">Edit</button></td>
-                                    </tr>
+                                  <tbody id="membership-table-body">
+
                                   </tbody>
                                 </table>
                               </div>
@@ -344,6 +342,10 @@ Designation
                           <div class="pt-3">
                             <h3><i class="fas fa-chalkboard-teacher mr-1"></i> Teaching Experience</h3>
                             <hr>
+                            <div class="form-group">
+                                  <input type="text" class="form-control d-none" id="institute-id" value="" placeholder="ID" readonly>
+                            </div>
+
                             <div class="form-group">
                                   <label for="institute-name"><i class="fas fa-university mr-1"></i> Institute Name:</label>
                                   <input type="text" class="form-control" id="institute-name" placeholder="Enter Institute Name" readonly>
@@ -362,11 +364,12 @@ Designation
                               <p class="text-danger">* For Ongoing Work, Leave this field Empty (For Till Date)</p>
                             </div>
                             <div class="form-group text-right">
-                                  <button type="button" class="btn btn-primary" id="institute-add">Add</button>
+                              <span id="loading-animation-institute" class="fas fa-spinner fa-pulse d-none"></span>
+                              <button type="button" class="btn btn-primary" id="institute-add">Add</button>
                             </div>
-                            <div class="card">
-                              <div class="card-body table-responsive p-0" style="max-height: 300px;">
-                                <table class="table table-head-fixed text-nowrap">
+                            <div class="card d-none" id="institute-table">
+                              <div class="card-body table-responsive p-0" id="institute-table-box" style="max-height: 300px;">
+                                <table class="table table-head-fixed text-nowrap" id="institute-table-main">
                                   <thead>
                                     <tr>
                                       <th>Institute</th>
@@ -376,14 +379,8 @@ Designation
                                       <th>Edit</th>
                                     </tr>
                                   </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td><button type="button" class="btn btn-primary w-100">Edit</button></td>
-                                    </tr>
+                                  <tbody id="institute-table-body">
+
                                   </tbody>
                                 </table>
                               </div>
@@ -393,6 +390,10 @@ Designation
                           <div class="pt-3">
                             <h3><i class="fas fa-user mr-1"></i> Administrative Experience</h3>
                             <hr>
+                            <div class="form-group">
+                                  <input type="text" class="form-control d-none" id="administrative-id" value="" placeholder="ID" readonly>
+                            </div>
+
                             <div class="form-group">
                                   <label for="administrative-name"><i class="fas fa-university mr-1"></i> Workspace Name:</label>
                                   <input type="text" class="form-control" id="administrative-name" placeholder="Enter Workspace Name" readonly>
@@ -411,11 +412,12 @@ Designation
                               <p class="text-danger">* For Ongoing Work, Leave this field Empty (For Till Date)</p>
                             </div>
                             <div class="form-group text-right">
-                                  <button type="button" class="btn btn-primary" id="administrative-add">Add</button>
+                              <span id="loading-animation-administrative" class="fas fa-spinner fa-pulse d-none"></span>
+                              <button type="button" class="btn btn-primary" id="administrative-add">Add</button>
                             </div>
-                            <div class="card">
-                              <div class="card-body table-responsive p-0" style="max-height: 300px;">
-                                <table class="table table-head-fixed text-nowrap">
+                            <div class="card d-none" id="administrative-table">
+                              <div class="card-body table-responsive p-0" id="administrative-table-box" style="max-height: 300px;">
+                                <table class="table table-head-fixed text-nowrap" id="administrative-table-main">
                                   <thead>
                                     <tr>
                                       <th>Workspace</th>
@@ -425,14 +427,8 @@ Designation
                                       <th>Edit</th>
                                     </tr>
                                   </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td><button type="button" class="btn btn-primary w-100">Edit</button></td>
-                                    </tr>
+                                  <tbody id="administrative-table-body">
+
                                   </tbody>
                                 </table>
                               </div>
@@ -442,6 +438,10 @@ Designation
                           <div class="pt-3">
                             <h3><i class="fas fa-cogs mr-1"></i> Industrial Experience</h3>
                             <hr>
+                            <div class="form-group">
+                                  <input type="text" class="form-control d-none" id="industry-id" value="" placeholder="ID" readonly>
+                            </div>
+
                             <div class="form-group">
                                   <label for="industry-name"><i class="fas fa-industry mr-1"></i> Industry Name:</label>
                                   <input type="text" class="form-control" id="industry-name" placeholder="Enter Industry Name" readonly>
@@ -460,11 +460,12 @@ Designation
                               <p class="text-danger">* For Ongoing Work, Leave this field Empty (For Till Date)</p>
                             </div>
                             <div class="form-group text-right">
-                                  <button type="button" class="btn btn-primary" id="industry-add">Add</button>
+                              <span id="loading-animation-industry" class="fas fa-spinner fa-pulse d-none"></span>
+                              <button type="button" class="btn btn-primary" id="industry-add">Add</button>
                             </div>
-                            <div class="card">
-                              <div class="card-body table-responsive p-0" style="max-height: 300px;">
-                                <table class="table table-head-fixed text-nowrap">
+                            <div class="card d-none" id="industry-table">
+                              <div class="card-body table-responsive p-0" id="industry-table-box" style="max-height: 300px;">
+                                <table class="table table-head-fixed text-nowrap" id="industry-table-main">
                                   <thead>
                                     <tr>
                                       <th>Industry</th>
@@ -474,14 +475,8 @@ Designation
                                       <th>Edit</th>
                                     </tr>
                                   </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td><button type="button" class="btn btn-primary w-100">Edit</button></td>
-                                    </tr>
+                                  <tbody id="industry-table-body">
+
                                   </tbody>
                                 </table>
                               </div>
@@ -491,6 +486,10 @@ Designation
                           <div class="pt-3">
                             <h3><i class="fas fa-file-alt mr-1"></i> Faculty Development</h3>
                             <hr>
+                            <div class="form-group">
+                                  <input type="text" class="form-control d-none" id="faculty-id" value="" placeholder="ID" readonly>
+                            </div>
+
                             <div class="form-group">
                                   <label for="faculty-name"><i class="fas fa-university mr-1"></i> Name:</label>
                                   <input type="text" class="form-control" id="faculty-name" placeholder="Enter Institute Name" readonly>
@@ -504,11 +503,12 @@ Designation
                               <input type="text" class="form-control" id="faculty-date_of_approval" placeholder="Enter Date of Approval" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric" readonly>
                             </div>
                             <div class="form-group text-right">
-                                  <button type="button" class="btn btn-primary" id="faculty-add">Add</button>
+                              <span id="loading-animation-faculty" class="fas fa-spinner fa-pulse d-none"></span>
+                              <button type="button" class="btn btn-primary" id="faculty-add">Add</button>
                             </div>
-                            <div class="card">
-                              <div class="card-body table-responsive p-0" style="max-height: 300px;">
-                                <table class="table table-head-fixed text-nowrap">
+                            <div class="card d-none" id="faculty-table">
+                              <div class="card-body table-responsive p-0" id="faculty-table-box" style="max-height: 300px;">
+                                <table class="table table-head-fixed text-nowrap" id="faculty-table-main">
                                   <thead>
                                     <tr>
                                       <th>Name</th>
@@ -517,13 +517,8 @@ Designation
                                       <th>Edit</th>
                                     </tr>
                                   </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td class="text-muted">Strength Of Material</td>
-                                      <td><button type="button" class="btn btn-primary w-100">Edit</button></td>
-                                    </tr>
+                                  <tbody id="faculty-table-body">
+
                                   </tbody>
                                 </table>
                               </div>
