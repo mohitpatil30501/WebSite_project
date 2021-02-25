@@ -57,7 +57,7 @@ def edit_designation(request):
             designation_object = Designation.objects.filter(teacher__teacher=request.user).get()
 
             subject_of_interest_list = []
-            for subject in SubjectOfInterest.objects.filter(teacher__teacher=request.user):
+            for subject in SubjectOfInterest.objects.filter(teacher__teacher=request.user).order_by('index'):
                 subject_of_interest_list.append({
                     'teacher': str(subject.teacher.id),
                     'id': str(subject.id),
