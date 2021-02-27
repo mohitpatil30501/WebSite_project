@@ -139,7 +139,7 @@ def edit_details(request):
             'phone': details_object.phone if details_object.phone is not None else '',
             'mobile': details_object.mobile if details_object.mobile is not None else '',
             'address': details_object.address if details_object.address is not None else '',
-            'date_of_birth': details_object.date_of_birth if details_object is not None else '',
+            'date_of_birth': details_object.date_of_birth if details_object.date_of_birth is not None else '',
         }
         return render(request, "Dashboard/details.html", {'data': data})
     return redirect('/')
