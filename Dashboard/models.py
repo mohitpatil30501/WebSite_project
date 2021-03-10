@@ -100,3 +100,116 @@ class FacultyDevelopment(models.Model):
     designation = models.CharField(max_length=100)
     date_of_approval = models.CharField(max_length=10)
 
+
+# Activity Page
+class PublicationsBook(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    id = models.UUIDField(default=uuid.uuid4(), unique=True)
+    index = models.AutoField(primary_key=True)
+
+    name = models.CharField(max_length=100)
+    publication = models.CharField(max_length=100)
+    year = models.CharField(max_length=100)
+
+
+class PublicationsJournal(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    id = models.UUIDField(default=uuid.uuid4(), unique=True)
+    index = models.AutoField(primary_key=True)
+
+    name = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
+    publication = models.CharField(max_length=100)
+    page = models.CharField(max_length=10)
+    year = models.CharField(max_length=5)
+    url = models.CharField(max_length=300)
+    level = models.CharField(max_length=15)
+
+
+class PublicationsPaper(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    id = models.UUIDField(default=uuid.uuid4(), unique=True)
+    index = models.AutoField(primary_key=True)
+
+    name = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
+    publication = models.CharField(max_length=100)
+    year = models.CharField(max_length=5)
+    url = models.CharField(max_length=300)
+    level = models.CharField(max_length=15)
+
+
+class ShortTermsTrainingProgram(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    id = models.UUIDField(default=uuid.uuid4(), unique=True)
+    index = models.AutoField(primary_key=True)
+
+    name = models.CharField(max_length=100)
+    organization = models.CharField(max_length=100)
+    year = models.CharField(max_length=5)
+    date_form = models.CharField(max_length=10)
+    date_to = models.CharField(max_length=10)
+    day = models.IntegerField()
+
+
+class Workshops(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    id = models.UUIDField(default=uuid.uuid4(), unique=True)
+    index = models.AutoField(primary_key=True)
+
+    name = models.CharField(max_length=100)
+    organization = models.CharField(max_length=100)
+    year = models.CharField(max_length=5)
+    date_form = models.CharField(max_length=10)
+    date_to = models.CharField(max_length=10)
+    day = models.IntegerField()
+
+
+class OtherInstituteInteractions(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    id = models.UUIDField(default=uuid.uuid4(), unique=True)
+    index = models.AutoField(primary_key=True)
+
+    organization = models.CharField(max_length=100)
+    year = models.CharField(max_length=5)
+    invitee = models.CharField(max_length=20)
+
+
+class Consultancy(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    id = models.UUIDField(default=uuid.uuid4(), unique=True)
+    index = models.AutoField(primary_key=True)
+
+    organization = models.CharField(max_length=100)
+    year = models.CharField(max_length=5)
+    work_done = models.CharField(max_length=300)
+    cost = models.CharField(max_length=20)
+
+
+class AwardReceived(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    id = models.UUIDField(default=uuid.uuid4(), unique=True)
+    index = models.AutoField(primary_key=True)
+
+    organization = models.CharField(max_length=100)
+    year = models.CharField(max_length=5)
+    title = models.CharField(max_length=100)
+
+
+class ProjectGuided(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    id = models.UUIDField(default=uuid.uuid4(), unique=True)
+    index = models.AutoField(primary_key=True)
+
+    name = models.CharField(max_length=100)
+    year = models.CharField(max_length=5)
+    level = models.CharField(max_length=3)
+
+
+class ExtraCurricularActivities(models.Model):
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    id = models.UUIDField(default=uuid.uuid4(), unique=True)
+    index = models.AutoField(primary_key=True)
+
+    name = models.CharField(max_length=200)
+    year = models.CharField(max_length=5)

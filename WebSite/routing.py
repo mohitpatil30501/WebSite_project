@@ -8,4 +8,5 @@ websocket_urlpatterns = [
     path('user/reset_password/<str:id>', UserResetPasswordConsumer.as_asgi()),
     path('details/<str:id>', DetailsConsumer.as_asgi()),
     path('designation/<str:id>', DesignationConsumer.as_asgi()),
+    path('activity/<str:id>', ActivityConsumer.as_asgi()),
 ]
