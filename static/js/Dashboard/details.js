@@ -112,3 +112,25 @@ function isEmail(email) {
   return regex.test(email);
 }
 
+// DropZone
+Dropzone.autoDiscover = false;
+var profileDropzone = new Dropzone("#profile-dropzone", {
+    url: "/dashboard/edit/profile",
+    maxFiles: 1,
+    maxFilesize: 3,
+    acceptedFiles: 'image/*',
+    addRemoveLinks: true,
+    capture: true,
+});
+
+profileDropzone.on("success", function(file){
+  $(".dz-success-mark svg").css("background", "green");
+  $(".dz-error-mark").css("display", "none");
+  $("#profile-dropzone-message").text("Profile Picture Successfully Uploaded...").css("color", "green");
+});
+
+profileDropzone.on("error", function(file, response) {
+  $(".dz-error-mark svg").css("background", "red");
+  $(".dz-success-mark").css("display", "none");
+  $("#profile-dropzone-message").text(response).css("color", "red");
+});

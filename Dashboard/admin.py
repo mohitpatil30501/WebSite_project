@@ -16,6 +16,17 @@ class DetailsAdmin(admin.ModelAdmin):
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 
+@admin.register(ProfilePicFile)
+class ProfilePicFileAdmin(admin.ModelAdmin):
+    pass
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "teacher":
+            return UserChoiceField(queryset=Teacher.objects.filter())
+
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
 @admin.register(Designation)
 class DesignationAdmin(admin.ModelAdmin):
     list_display = ('teacher', 'id',)

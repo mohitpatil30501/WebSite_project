@@ -1,4 +1,5 @@
-from django.urls import path
+from django.conf.urls import url
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
@@ -6,4 +7,7 @@ urlpatterns = [
     path('edit/details', views.edit_details, name='edit_details'),
     path('edit/designation', views.edit_designation, name='edit_designation'),
     path('edit/activity', views.edit_activity, name='edit_activity'),
+    path('edit/profile', views.profile_pic, name='profile_pic'),
+
+    url(r'^files/', include('db_file_storage.urls')),
 ]

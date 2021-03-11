@@ -1,5 +1,6 @@
 import json
 
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 from .models import *
@@ -87,6 +88,119 @@ def dashboard(request):
                     'designation': faculty.designation,
                     'date_of_approval': faculty.date_of_approval,
                 })
+
+            publications_book = []
+            for book in PublicationsBook.objects.filter(teacher__teacher=request.user).order_by('index'):
+                publications_book.append({
+                    'teacher': str(book.teacher.id),
+                    'id': str(book.id),
+                    'name': book.name,
+                    'publication': book.publication,
+                    'year': book.year,
+                })
+
+            publications_journal = []
+            for journal in PublicationsJournal.objects.filter(teacher__teacher=request.user).order_by('index'):
+                publications_journal.append({
+                    'teacher': str(journal.teacher.id),
+                    'id': str(journal.id),
+                    'name': journal.name,
+                    'title': journal.title,
+                    'publication': journal.publication,
+                    'page': journal.page,
+                    'year': journal.year,
+                    'url': journal.url,
+                    'level': journal.level,
+                })
+
+            publications_paper = []
+            for paper in PublicationsPaper.objects.filter(teacher__teacher=request.user).order_by('index'):
+                publications_paper.append({
+                    'teacher': str(paper.teacher.id),
+                    'id': str(paper.id),
+                    'name': paper.name,
+                    'title': paper.title,
+                    'publication': paper.publication,
+                    'year': paper.year,
+                    'url': paper.url,
+                    'level': paper.level,
+                })
+
+            sttps = []
+            for sttp in ShortTermsTrainingProgram.objects.filter(teacher__teacher=request.user).order_by('index'):
+                sttps.append({
+                    'teacher': str(sttp.teacher.id),
+                    'id': str(sttp.id),
+                    'name': sttp.name,
+                    'organization': sttp.organization,
+                    'year': sttp.year,
+                    'date_form': sttp.date_form,
+                    'date_to': sttp.date_to,
+                    'day': sttp.day,
+                })
+
+            workshops = []
+            for workshop in Workshops.objects.filter(teacher__teacher=request.user).order_by('index'):
+                workshops.append({
+                    'teacher': str(workshop.teacher.id),
+                    'id': str(workshop.id),
+                    'name': workshop.name,
+                    'organization': workshop.organization,
+                    'year': workshop.year,
+                    'date_form': workshop.date_form,
+                    'date_to': workshop.date_to,
+                    'day': workshop.day,
+                })
+
+            oiis = []
+            for oii in OtherInstituteInteractions.objects.filter(teacher__teacher=request.user).order_by('index'):
+                oiis.append({
+                    'teacher': str(oii.teacher.id),
+                    'id': str(oii.id),
+                    'organization': oii.organization,
+                    'year': oii.year,
+                    'invitee': oii.invitee,
+                })
+
+            consultancys = []
+            for consultancy in Consultancy.objects.filter(teacher__teacher=request.user).order_by('index'):
+                consultancys.append({
+                    'teacher': str(consultancy.teacher.id),
+                    'id': str(consultancy.id),
+                    'organization': consultancy.organization,
+                    'year': consultancy.year,
+                    'work_done': consultancy.work_done,
+                    'cost': consultancy.cost,
+                })
+
+            awards = []
+            for award in AwardReceived.objects.filter(teacher__teacher=request.user).order_by('index'):
+                awards.append({
+                    'teacher': str(award.teacher.id),
+                    'id': str(award.id),
+                    'organization': award.organization,
+                    'year': award.year,
+                    'title': award.title,
+                })
+
+            projects = []
+            for project in ProjectGuided.objects.filter(teacher__teacher=request.user).order_by('index'):
+                projects.append({
+                    'teacher': str(project.teacher.id),
+                    'id': str(project.id),
+                    'name': project.name,
+                    'year': project.year,
+                    'level': project.level,
+                })
+
+            ecas = []
+            for eca in ExtraCurricularActivities.objects.filter(teacher__teacher=request.user).order_by('index'):
+                ecas.append({
+                    'teacher': str(eca.teacher.id),
+                    'id': str(eca.id),
+                    'name': eca.name,
+                    'year': eca.year,
+                })
         except:
             return redirect('/')
 
@@ -101,6 +215,10 @@ def dashboard(request):
                 'mobile': details_object.mobile,
                 'address': details_object.address,
                 'date_of_birth': details_object.date_of_birth,
+                'profile_pic': {
+                    'status': 1 if bool(details_object.profile_file) else 0,
+                    'url': details_object.profile_file.url if bool(details_object.profile_file) else '',
+                }
             },
             'designation': {
                 'designation': {
@@ -117,6 +235,18 @@ def dashboard(request):
                 'administratives': administratives,
                 'industrys': industrys,
                 'facultys': facultys,
+            },
+            'activity': {
+                'publications_book': publications_book,
+                'publications_journal': publications_journal,
+                'publications_paper': publications_paper,
+                'sttps': sttps,
+                'workshops': workshops,
+                'oiis': oiis,
+                'consultancys': consultancys,
+                'awards': awards,
+                'projects': projects,
+                'ecas': ecas,
             }
         }
         return render(request, "Dashboard/dashboard.html", data)
@@ -140,6 +270,10 @@ def edit_details(request):
             'mobile': details_object.mobile if details_object.mobile is not None else '',
             'address': details_object.address if details_object.address is not None else '',
             'date_of_birth': details_object.date_of_birth if details_object.date_of_birth is not None else '',
+            'profile_pic': {
+                'status': 1 if bool(details_object.profile_file) else 0,
+                'url': details_object.profile_file.url if bool(details_object.profile_file) else '',
+            }
         }
         return render(request, "Dashboard/details.html", {'data': data})
     return redirect('/')
@@ -148,6 +282,8 @@ def edit_details(request):
 def edit_designation(request):
     if request.user.is_authenticated:
         try:
+            details_object = Details.objects.filter(teacher__teacher=request.user).get()
+
             designation_object = Designation.objects.filter(teacher__teacher=request.user).get()
 
             subject_of_interest_list = []
@@ -230,6 +366,12 @@ def edit_designation(request):
             return redirect('/dashboard')
 
         data = {
+            'details': {
+                'profile_pic': {
+                    'status': 1 if bool(details_object.profile_file) else 0,
+                    'url': details_object.profile_file.url if bool(details_object.profile_file) else '',
+                }
+            },
             'designation': {
                 'teacher': str(designation_object.teacher.id),
                 'id': str(designation_object.id),
@@ -252,6 +394,8 @@ def edit_designation(request):
 def edit_activity(request):
     if request.user.is_authenticated:
         try:
+            details_object = Details.objects.filter(teacher__teacher=request.user).get()
+
             designation_object = Designation.objects.filter(teacher__teacher=request.user).get()
 
             publications_book = []
@@ -370,6 +514,12 @@ def edit_activity(request):
             return redirect('/dashboard')
 
         data = {
+            'details': {
+                'profile_pic': {
+                    'status': 1 if bool(details_object.profile_file) else 0,
+                    'url': details_object.profile_file.url if bool(details_object.profile_file) else '',
+                }
+            },
             'designation': {
                 'teacher': str(designation_object.teacher.id),
                 'id': str(designation_object.id),
@@ -390,3 +540,19 @@ def edit_activity(request):
         }
         return render(request, "Dashboard/activity.html", {'data': data})
     return redirect('/')
+
+
+def profile_pic(request):
+    if request.method == 'POST':
+        profile_pic = request.FILES.get('file')
+        try:
+            details = Details.objects.filter(teacher__teacher=request.user).get()
+            details.profile_file = profile_pic
+            details.save()
+        except:
+            return JsonResponse({'status': False})
+
+        return JsonResponse({'status': True})
+
+    return JsonResponse({'status': False})
+

@@ -10,6 +10,8 @@ Details
   <link rel="stylesheet" href="{% static 'assets/plugins/select2/css/select2.min.css' %}">
   <link rel="stylesheet" href="{% static 'assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css' %}">
 
+<!-- dropzonejs -->
+  <link rel="stylesheet" href="{% static 'assets/plugins/dropzone/min/dropzone.min.css' %}">
   <script>
     var data  = {{ data|safe }};
   </script>
@@ -85,7 +87,11 @@ Details
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{% static 'assets/image/Dashboard/avatar.png' %}" class="img-circle elevation-2" alt="User Image">
+          {% if data.profile_pic.status == 1 %}
+            <img src='{{ data.profile_pic.url }}' class="img-circle elevation-2" alt="User Image">
+          {% else %}
+            <img src="{% static 'assets/image/Dashboard/avatar.png' %}" class="img-circle elevation-2" alt="User Image">
+          {% endif %}
         </div>
         <div class="info">
           <a href="/dashboard" class="d-block" style="text-transform: capitalize;">{{ request.user.first_name }} {{ request.user.last_name }}</a>
@@ -233,6 +239,20 @@ Details
                           </div>
                         </div>
 
+                        <hr>
+                        <div class="form-group">
+                          <label for="profile-dropzone"><i class="fas fa-camera mr-1"></i> Profile Picture:</label>
+                          <p style="color: 'red';" id="profile-dropzone-message"></p>
+                          <hr>
+                          <form action="/dashboard/edit/profile" method="post" class="dropzone" id="profile-dropzone">
+                            {% csrf_token %}
+                            <div class="fallback">
+                              <input name="file" type="file" />
+                            </div>
+                          </form>
+
+                        </div>
+
                       </div>
 					</div>
                   <!-- /.tab-pane -->
@@ -255,9 +275,10 @@ Details
   <script src="{% static 'assets/plugins/inputmask/jquery.inputmask.min.js' %}"></script>
   <!-- Select2 -->
   <script src="{% static 'assets/plugins/select2/js/select2.full.min.js' %}"></script>
+  <!-- dropzonejs -->
+  <script src="{% static 'assets/plugins/dropzone/min/dropzone.min.js' %}"></script>
 
   <!-- page script -->
   <script src="{% static 'js/Dashboard/details.js' %}"></script>
-
 </body>
 {% endblock %}

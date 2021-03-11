@@ -79,7 +79,11 @@ Dashboard
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{% static 'assets/image/Dashboard/avatar.png' %}" class="img-circle elevation-2" alt="User Image">
+          {% if details.profile_pic.status == 1 %}
+            <img src='{{ details.profile_pic.url }}' class="img-circle elevation-2" alt="User Image">
+          {% else %}
+            <img src="{% static 'assets/image/Dashboard/avatar.png' %}" class="img-circle elevation-2" alt="User Image">
+          {% endif %}
         </div>
         <div class="info">
           <a href="/dashboard" class="d-block" style="text-transform: capitalize;">{{ request.user.first_name }} {{ request.user.last_name }}</a>
@@ -183,14 +187,32 @@ Dashboard
             <div class="card card-primary card-outline">
               <div class="card-body box-profile">
                 <div class="text-center">
-                  <img class="profile-user-img img-fluid img-circle"
-                       src="{% static 'assets/image/Dashboard/avatar.png' %}"
-                       alt="User profile picture">
+                    {% if details.profile_pic.status == 1 %}
+                        <img class="profile-user-img img-fluid img-circle"
+                           src="{{ details.profile_pic.url }}"
+                           alt="User profile picture">
+                    {% else %}
+                        <img class="profile-user-img img-fluid img-circle"
+                           src="{% static 'assets/image/Dashboard/avatar.png' %}"
+                           alt="User profile picture">
+                    {% endif %}
                 </div>
 
-                <h3 class="profile-username text-center">Navneet Patil</h3>
+                <h3 class="profile-username text-center" style="text-transform: capitalize;">{{ request.user.first_name }} {{ request.user.last_name }}</h3>
 
-                <p class="text-muted text-center">Mechanical Engineer</p>
+                <p class="text-muted text-center">{% if designation.designation.designation != None or designation.designation.department != None or designation.designation.institute != None %}
+                                {% if designation.designation.designation != None %}
+                                    {{ designation.designation.designation }}
+                                  <br>
+                                {% endif %}
+                                {% if designation.designation.department != None %}
+                                  {{ designation.designation.department }}
+                                  <br>
+                                {% endif %}
+                                {% if designation.designation.institute != None %}
+                                  {{ designation.designation.institute }}
+                                {% endif %}
+                              {% endif %}</p>
 
               </div>
               <!-- /.card-body -->
@@ -405,6 +427,7 @@ Dashboard
                   <!-- /.tab-pane -->
                     <div class="tab-pane" id="activity">
                         <strong><i class="fas fa-book-open mr-1"></i> Publications-Books</strong>
+                        {% if activity.publications_book %}
                             <div class="card">
                               <div class="card-body table-responsive p-0" style="max-height: 300px;">
                                 <table class="table table-head-fixed text-nowrap">
@@ -415,18 +438,23 @@ Dashboard
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr>
-                                      <td class="text-muted">2000</td>
-                                      <td class="text-muted">“Elements of Mechanical Engineering”, Everest Publications, Pune.</td>
-                                    </tr>
+                                      {% for book in activity.publications_book %}
+										<tr>
+										  <td class="text-muted">{{ book.year }}</td>
+										  <td class="text-muted">" {{ book.name }} ", {{ book.publication }}</td>
+										</tr>
+                                      {% endfor %}
                                   </tbody>
                                 </table>
                               </div>
                             </div>
-
+                        {% else %}
+                          <p class="text-muted"> Not Available </p>
+                        {% endif %}
                         <hr>
 
                         <strong><i class="fas fa-copy mr-1"></i> Publications-Journals</strong>
+                        {% if activity.publications_journal %}
                             <div class="card">
                               <div class="card-body table-responsive p-0" style="max-height: 300px;">
                                 <table class="table table-head-fixed text-nowrap">
@@ -437,18 +465,24 @@ Dashboard
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr>
-                                      <td class="text-muted">2000</td>
-                                      <td class="text-muted">“Elements of Mechanical Engineering”, Everest Publications, Pune.</td>
-                                    </tr>
+                                      {% for journal in activity.publications_journal %}
+										<tr>
+										  <td class="text-muted">{{ journal.year }}</td>
+										  <td class="text-muted">"Published a paper on " {{ journal.title }} " published in {{ journal.level }} journal of {{ journal.name }}, {{ journal.publication }} on {{ journal.page }} ( {{ journal.url }} )</td>
+										</tr>
+                                      {% endfor %}
                                   </tbody>
                                 </table>
                               </div>
                             </div>
+                        {% else %}
+                          <p class="text-muted"> Not Available </p>
+                        {% endif %}
 
                         <hr>
 
                         <strong><i class="fas fa-file-alt mr-1"></i> Publications-Papers</strong>
+                        {% if activity.publications_paper %}
                             <div class="card">
                               <div class="card-body table-responsive p-0" style="max-height: 300px;">
                                 <table class="table table-head-fixed text-nowrap">
@@ -459,17 +493,23 @@ Dashboard
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr>
-                                      <td class="text-muted">2000</td>
-                                      <td class="text-muted">“Elements of Mechanical Engineering”, Everest Publications, Pune.</td>
-                                    </tr>
+                                      {% for paper in activity.publications_paper %}
+										<tr>
+										  <td class="text-muted">{{ paper.year }}</td>
+										  <td class="text-muted">"Presented a paper on " {{ paper.title }} " at {{ paper.level }} conference conducted by {{ paper.name }}, {{ paper.publication }} ( {{ paper.url }} )</td>
+										</tr>
+                                      {% endfor %}
                                   </tbody>
                                 </table>
                               </div>
                             </div>
+                        {% else %}
+                          <p class="text-muted"> Not Available </p>
+                        {% endif %}
 
                         <hr>
                         <strong><i class="fas fa-tasks mr-1"></i> Short Terms Training Program</strong>
+                        {% if activity.sttps %}
                             <div class="card">
                               <div class="card-body table-responsive p-0" style="max-height: 300px;">
                                 <table class="table table-head-fixed text-nowrap">
@@ -480,18 +520,24 @@ Dashboard
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr>
-                                      <td class="text-muted">2000</td>
-                                      <td class="text-muted">“Elements of Mechanical Engineering”, Everest Publications, Pune.</td>
-                                    </tr>
+                                      {% for sttp in activity.sttps %}
+										<tr>
+										  <td class="text-muted">{{ sttp.year }}</td>
+										  <td class="text-muted">Attended " {{ sttp.name }} " conducted by {{ sttp.organization }} from {{ sttp.date_from }} to {{ sttp.date_to }} ({{ sttp.day }} Days)</td>
+										</tr>
+                                      {% endfor %}
                                   </tbody>
                                 </table>
                               </div>
                             </div>
+                        {% else %}
+                          <p class="text-muted"> Not Available </p>
+                        {% endif %}
 
                         <hr>
 
                         <strong><i class="fas fa-cog mr-1"></i> Workshops</strong>
+                        {% if activity.workshops %}
                             <div class="card">
                               <div class="card-body table-responsive p-0" style="max-height: 300px;">
                                 <table class="table table-head-fixed text-nowrap">
@@ -502,18 +548,24 @@ Dashboard
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr>
-                                      <td class="text-muted">2000</td>
-                                      <td class="text-muted">“Elements of Mechanical Engineering”, Everest Publications, Pune.</td>
-                                    </tr>
+                                      {% for workshop in activity.workshops %}
+										<tr>
+										  <td class="text-muted">{{ workshop.year }}</td>
+										  <td class="text-muted">Completed " {{ workshop.name }} " conducted by {{ workshop.organization }} from {{ workshop.date_from }} to {{ workshop.date_to }} ({{ workshop.day }} Days)</td>
+										</tr>
+                                      {% endfor %}
                                   </tbody>
                                 </table>
                               </div>
                             </div>
+                        {% else %}
+                          <p class="text-muted"> Not Available </p>
+                        {% endif %}
 
                         <hr>
 
                         <strong><i class="fas fa-university mr-1"></i> Other Institute Interactions</strong>
+                        {% if activity.oiis %}
                             <div class="card">
                               <div class="card-body table-responsive p-0" style="max-height: 300px;">
                                 <table class="table table-head-fixed text-nowrap">
@@ -524,18 +576,23 @@ Dashboard
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr>
-                                      <td class="text-muted">2000</td>
-                                      <td class="text-muted">“Elements of Mechanical Engineering”, Everest Publications, Pune.</td>
-                                    </tr>
+                                      {% for oii in activity.oiis %}
+										<tr>
+										  <td class="text-muted">{{ oii.year }}</td>
+										  <td class="text-muted">{{ oii.invitee }} in {{ oii.organization }}</td>
+										</tr>
+                                      {% endfor %}
                                   </tbody>
                                 </table>
                               </div>
                             </div>
-
+                        {% else %}
+                          <p class="text-muted"> Not Available </p>
+                        {% endif %}
                         <hr>
 
                         <strong><i class="fas fa-chart-bar mr-1"></i> Consultancy</strong>
+                        {% if activity.consultancys %}
                             <div class="card">
                               <div class="card-body table-responsive p-0" style="max-height: 300px;">
                                 <table class="table table-head-fixed text-nowrap">
@@ -546,17 +603,23 @@ Dashboard
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr>
-                                      <td class="text-muted">2000</td>
-                                      <td class="text-muted">“Elements of Mechanical Engineering”, Everest Publications, Pune.</td>
-                                    </tr>
+                                      {% for consultancy in activity.consultancys %}
+										<tr>
+										  <td class="text-muted">{{ consultancy.year }}</td>
+										  <td class="text-muted">Provided consultancy work in field of {{ consultancy.work_done }} of contributions worth Rs.{{ consultancy.cost }} at {{ consultancy.organization }}</td>
+										</tr>
+                                      {% endfor %}
                                   </tbody>
                                 </table>
                               </div>
                             </div>
+                        {% else %}
+                          <p class="text-muted"> Not Available </p>
+                        {% endif %}
 
                         <hr>
                         <strong><i class="fas fa-award mr-1"></i> Award Received</strong>
+                        {% if activity.awards %}
                             <div class="card">
                               <div class="card-body table-responsive p-0" style="max-height: 300px;">
                                 <table class="table table-head-fixed text-nowrap">
@@ -567,18 +630,24 @@ Dashboard
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr>
-                                      <td class="text-muted">2000</td>
-                                      <td class="text-muted">“Elements of Mechanical Engineering”, Everest Publications, Pune.</td>
-                                    </tr>
+                                      {% for award in activity.awards %}
+										<tr>
+										  <td class="text-muted">{{ award.year }}</td>
+										  <td class="text-muted">Received certificate of {{ award.name }} in {{ award.organization }}</td>
+										</tr>
+                                      {% endfor %}
                                   </tbody>
                                 </table>
                               </div>
                             </div>
+                        {% else %}
+                          <p class="text-muted"> Not Available </p>
+                        {% endif %}
 
                         <hr>
 
                         <strong><i class="fas fa-atom mr-1"></i> Project Guided</strong>
+                        {% if activity.projects %}
                             <div class="card">
                               <div class="card-body table-responsive p-0" style="max-height: 300px;">
                                 <table class="table table-head-fixed text-nowrap">
@@ -589,18 +658,24 @@ Dashboard
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr>
-                                      <td class="text-muted">2000</td>
-                                      <td class="text-muted">“Elements of Mechanical Engineering”, Everest Publications, Pune.</td>
-                                    </tr>
+                                      {% for project in activity.projects %}
+										<tr>
+										  <td class="text-muted">{{ project.year }}</td>
+										  <td class="text-muted">{{ project.name }} ( {{ project.level }} )</td>
+										</tr>
+                                      {% endfor %}
                                   </tbody>
                                 </table>
                               </div>
                             </div>
+                        {% else %}
+                          <p class="text-muted"> Not Available </p>
+                        {% endif %}
 
                         <hr>
 
                         <strong><i class="fas fa-cogs mr-1"></i> Extra Curricular Activities</strong>
+                        {% if activity.ecas %}
                             <div class="card">
                               <div class="card-body table-responsive p-0" style="max-height: 300px;">
                                 <table class="table table-head-fixed text-nowrap">
@@ -611,14 +686,19 @@ Dashboard
                                     </tr>
                                   </thead>
                                   <tbody>
-                                    <tr>
-                                      <td class="text-muted">2000</td>
-                                      <td class="text-muted">“Elements of Mechanical Engineering”, Everest Publications, Pune.</td>
-                                    </tr>
+                                      {% for eca in activity.ecas %}
+										<tr>
+										  <td class="text-muted">{{ eca.year }}</td>
+										  <td class="text-muted">{{ eca.name }}</td>
+										</tr>
+                                      {% endfor %}
                                   </tbody>
                                 </table>
                               </div>
                             </div>
+                        {% else %}
+                          <p class="text-muted"> Not Available </p>
+                        {% endif %}
 
                         <hr>
 

@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'channels',
-    # 'reversion',
+    'db_file_storage',
     'WebSite',
     'User',
     'Dashboard',
@@ -145,3 +145,5 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'developingnature@gmail.com'
 EMAIL_HOST_PASSWORD = 'oqkixbxjtdvmdmoq'
+
+DEFAULT_FILE_STORAGE = 'db_file_storage.storage.DatabaseFileStorage'

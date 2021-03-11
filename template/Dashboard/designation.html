@@ -85,10 +85,14 @@ Designation
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{% static 'assets/image/Dashboard/avatar.png' %}" class="img-circle elevation-2" alt="User Image">
+          {% if data.details.profile_pic.status == 1 %}
+            <img src='{{ data.details.profile_pic.url }}' class="img-circle elevation-2" alt="User Image">
+          {% else %}
+            <img src="{% static 'assets/image/Dashboard/avatar.png' %}" class="img-circle elevation-2" alt="User Image">
+          {% endif %}
         </div>
         <div class="info">
-          <a href="/dashboard" class="d-block">{{ request.user.first_name }} {{ request.user.last_name }}</a>
+          <a href="/dashboard" class="d-block" style="text-transform: capitalize;">{{ request.user.first_name }} {{ request.user.last_name }}</a>
         </div>
       </div>
 
