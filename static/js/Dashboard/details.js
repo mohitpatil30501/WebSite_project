@@ -127,6 +127,7 @@ profileDropzone.on("success", function(file){
   $(".dz-success-mark svg").css("background", "green");
   $(".dz-error-mark").css("display", "none");
   $("#profile-dropzone-message").text("Profile Picture Successfully Uploaded...").css("color", "green");
+  location.reload();
 });
 
 profileDropzone.on("error", function(file, response) {
