@@ -25,7 +25,7 @@ SECRET_KEY = '81d^-8(2)il(vzsm_h1yia32giv^o-=63v$+6c8c2*mn-c3zs&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '*']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 # Application definition
 
@@ -79,18 +79,10 @@ ASGI_APPLICATION = "WebSite.asgi.application"
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd5qrg65d6lopm1',
-        'USER': 'tgetozqrbzhuyy',
-        'PASSWORD': '15a7f8d5eac5f214815bccb93f71121c54456f1750e817ca716171a453d3af43',
-        'HOST': 'ec2-35-174-118-71.compute-1.amazonaws.com',
-        'PORT': '5432 '
-    }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    },
 }
 # Database key: rrbUoBKJrkpe5e6naQ5n
 
@@ -143,7 +135,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'developingnature@gmail.com'
-EMAIL_HOST_PASSWORD = 'oqkixbxjtdvmdmoq'
+EMAIL_HOST_USER = 'email'
+EMAIL_HOST_PASSWORD = ''
 
 DEFAULT_FILE_STORAGE = 'db_file_storage.storage.DatabaseFileStorage'
